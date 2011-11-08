@@ -91,6 +91,11 @@
 			unset($this->properties[$offset]);
 		}
 		
+		//extending EventHandler
+		public function dispatchEvent($event){
+			parent::dispatchEvent($event);
+		}
+		
 		//extend as prototype
 		public function __invoke($properties=array()){
 			return new Object($properties,$this);
