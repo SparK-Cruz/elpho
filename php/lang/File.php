@@ -86,8 +86,9 @@
 		public function write($texto){
 			$this->conteudo .= $texto;
 		}
-		public function save(){
-			$arquivo = fopen($this->nome,'wb');
+		public function save($nome=null){
+			$nome = $nome?:$this->nome;
+			$arquivo = fopen($nome,'wb');
 			fwrite($arquivo,$this->getContent());
 			fclose($arquivo);
 			chmod($this->nome,0777);
