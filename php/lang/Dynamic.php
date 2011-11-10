@@ -1,5 +1,11 @@
 <?php
 	class Dynamic extends stdClass implements ArrayAccess{
+		
+		/*
+		 * Calling params
+		 * @param string $key
+		 * @param array $params
+		 */
 		public function __call($key,$params=array()){
 			if(!isset($this->{$key})) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
 			$subject = $this->{$key};
@@ -18,20 +24,43 @@
 			return call_user_func_array($subject,$params);
 		}
 		
-		//Implementing ArrayAccess
+		/*
+		 * Implementing ArrayAccess with set
+		 * @param string $offset
+		 */
 		public function offsetExists($offset){
 			return isset($this->{$offset});
 		}
+		
+		/*
+		 * Implementing ArrayAccess with get
+		 * @param string $offset
+		 */
 		public function offsetGet($offset){
 			return $this->{$offset};
 		}
+		
+		/*
+		 * Implementing ArrayAccess with set
+		 * @param string $offset
+		 * @param string $value
+		 */
 		public function offsetSet($offset,$value){
 			$this->{$offset} = $value;
 		}
+		
+		/*
+		 * Implementing ArrayAccess with unset
+		 * @param string $offset
+		 */
 		public function offsetUnset($offset){
 			unset($this->{$offset});
 			$this->{$offset} = null;
 		}
+		
+		/*
+		 * Implementing ArrayAccess and Transform in String
+		 */
 		public function __toString(){
 			return '[object '.get_class($this).']';
 		}
