@@ -1,4 +1,6 @@
 <?php
+	import(php.lang.String);
+	
 	class File{
 		protected $nome;
 		protected $conteudo;
@@ -99,11 +101,11 @@
 			$this->conteudo .= $texto;
 		}
 		public function save($nome=null){
-			$nome = $nome?:$this->nome;
-			$arquivo = fopen($nome,'wb');
+			if($nome) $this->setName($nome);
+			$arquivo = fopen($this->nome,'wb');
 			fwrite($arquivo,$this->getContent());
 			fclose($arquivo);
-			chmod($this->nome,0777);
+			chmod($this->nome,0755);
 		}
 		
 		public function delete(){
