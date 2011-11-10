@@ -1,9 +1,9 @@
 <?php
 	class File{
-		protected $nome = "";
-		protected $conteudo = "";
-		protected $tipo = "";
-		protected $extensao = "";
+		protected $nome;
+		protected $conteudo;
+		protected $tipo;
+		protected $extensao;
 		
 		//constructor
 		public function File($nome=""){
@@ -42,33 +42,43 @@
 		public function getFullName(){
 			return new String($this->nome);
 		}
+		
 		public function getName(){
 			return new String(basename($this->getFullName()));
 		}
+		
 		public function getExtension(){
 			return new String($this->extensao);
 		}
+		
 		public function getContent(){
 			return new String($this->conteudo);
 		}
+		
 		public function exists(){
 			return file_exists($this->nome);
 		}
+		
 		public function getSize(){
 			return $this->conteudo->length();
 		}
+		
 		public function getType(){
 			return new String($this->tipo);
 		}
+		
 		public function getInfo(){
 			return new ArrayList($this->getType(),$this->getSize());
 		}
+		
 		public function getBase64(){
 			return "data:".$this->getType().";base64,".base64_encode($this->getContent());
 		}
+		
 		public function getChecksum(){
 			return md5($this->getContent()->toString());
 		}
+		
 		public function getCopy(){
 			$copy = new File();
 			$copy->setContent($this->getContent());
@@ -79,19 +89,23 @@
 		protected function ler(){
 			$this->conteudo = file_get_contents($this->nome);
 		}
+		
 		public function erase(){
 			$this->setContent('');
 			if($this->exists()) $this->save();
 		}
+		
 		public function write($texto){
 			$this->conteudo .= $texto;
 		}
+		
 		public function save(){
 			$arquivo = fopen($this->nome,'wb');
 			fwrite($arquivo,$this->getContent());
 			fclose($arquivo);
 			chmod($this->nome,0777);
 		}
+		
 		public function delete(){
 			$this->erase();
 			if($this->exists()) unlink($this->nome);
@@ -146,6 +160,7 @@
 			
 			return $tipo."/".$ext;
 		}
+		
 		public static function toExtension($tipo){
 			$tipo = strtolower($tipo);
 			$tipo = explode("/",$tipo);
