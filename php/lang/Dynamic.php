@@ -3,8 +3,8 @@
 		
 		/*
 		 * Calling params
-		 * @var key (string)
-		 * @var params (array)
+		 * @param key (string)
+		 * @param params (array)
 		 */
 		public function __call($key,$params=array()){
 			if(!isset($this->{$key})) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
@@ -26,7 +26,7 @@
 		
 		/*
 		 * Implementing ArrayAccess with set
-		 * @var offset (string)
+		 * @param offset (string)
 		 */
 		public function offsetExists($offset){
 			return isset($this->{$offset});
@@ -34,7 +34,7 @@
 		
 		/*
 		 * Implementing ArrayAccess with get
-		 * @var offset (string)
+		 * @param offset (string)
 		 */
 		public function offsetGet($offset){
 			return $this->{$offset};
@@ -42,8 +42,8 @@
 		
 		/*
 		 * Implementing ArrayAccess with set
-		 * @var offset (string)
-		 * @var value (string)
+		 * @param offset (string)
+		 * @param value (string)
 		 */
 		public function offsetSet($offset,$value){
 			$this->{$offset} = $value;
@@ -51,7 +51,7 @@
 		
 		/*
 		 * Implementing ArrayAccess with unset
-		 * @var offset (string)
+		 * @param offset (string)
 		 */
 		public function offsetUnset($offset){
 			unset($this->{$offset});
@@ -64,5 +64,5 @@
 		public function __toString(){
 			return '[object '.get_class($this).']';
 		}
-	}//End
+	}
 ?>
