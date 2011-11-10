@@ -30,4 +30,24 @@
 	function __autoload($classe){
 		LoadManager::autoload($classe);
 	}
+	
+	function checkOverload($arguments,$type,$_=null){
+		$types = func_get_args();
+		$arguments = array_shift($types);
+		
+		$i = 0;
+		foreach($types as $type){
+			$argument = $arguments[$i];
+			
+			if(is_object($argument)){
+				if(!is_a($argument,$type)) return false;
+				continue;
+			}
+			
+			$type = ($type=="float"?"double":$type);
+			if(gettype($argument) !== $type) return false;
+			$i++;
+		}
+		return true;
+	}
 ?>

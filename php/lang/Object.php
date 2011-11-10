@@ -36,7 +36,7 @@
 			$this->index = 0;
 		}
 		private function updateAtributeList(){
-			$this->indexes = ArrayList();
+			$this->indexes = new ArrayList();
 			
 			foreach($this->properties as $var => $value){
 				$this->indexes->push($var);
