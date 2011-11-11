@@ -1,7 +1,7 @@
 <?php
 	class Dynamic extends stdClass implements ArrayAccess{
 		
-		/*
+		/**
 		 * Calling params
 		 * @param string $key
 		 * @param array $params
@@ -24,45 +24,53 @@
 			return call_user_func_array($subject,$params);
 		}
 		
-		/*
+		/**
 		 * Implementing ArrayAccess with set
-		 * @param string $offset
+		 * @param mixed $offset
+		 * @return boolean
 		 */
 		public function offsetExists($offset){
 			return isset($this->{$offset});
 		}
 		
-		/*
+		/**
 		 * Implementing ArrayAccess with get
-		 * @param string $offset
+		 * @param mixed $offset
+		 * @return mixed
 		 */
 		public function offsetGet($offset){
 			return $this->{$offset};
 		}
 		
-		/*
+		/**
 		 * Implementing ArrayAccess with set
-		 * @param string $offset
-		 * @param string $value
+		 * @param mixed $offset
+		 * @param mixed $value
+		 * @return void
 		 */
 		public function offsetSet($offset,$value){
 			$this->{$offset} = $value;
 		}
 		
-		/*
+		/**
 		 * Implementing ArrayAccess with unset
-		 * @param string $offset
+		 * @param mixed $offset
+		 * @return void
 		 */
 		public function offsetUnset($offset){
 			unset($this->{$offset});
 			$this->{$offset} = null;
 		}
 		
-		/*
-		 * Implementing ArrayAccess and Transform in String
+		/**
+		 * toString failsafe magic method
+		 * @return string
 		 */
-		public function __toString(){
+		public function toString(){
 			return '[object '.get_class($this).']';
+		}
+		public function __toString(){
+			return $this->toString();
 		}
 	}
 ?>
