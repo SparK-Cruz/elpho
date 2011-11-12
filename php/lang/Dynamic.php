@@ -5,6 +5,7 @@
 		 * Calling params
 		 * @param string $key
 		 * @param array $params
+		 * @return void
 		 */
 		public function __call($key,$params=array()){
 			if(!isset($this->{$key})) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
