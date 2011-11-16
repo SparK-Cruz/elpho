@@ -74,12 +74,6 @@
 			if(is_object($this->conteudo)) $conteudo = $this->conteudo->toString();
 			return imagecreatefromstring($conteudo);
 		}
-		public function copy(){
-			$copy = new Image();
-			$copy->setType($this->getType());
-			$copy->setContent($this->getContent());
-			return $copy;
-		}
 		
 		//actions
 		public function applyWatermark($marca,$transparencia,$position="center"){

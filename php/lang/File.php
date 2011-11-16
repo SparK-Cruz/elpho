@@ -83,7 +83,8 @@
 		}
 		
 		public function copy(){
-			$copy = new File();
+			$copy = new self();
+			$copy->setType($this->getType());
 			$copy->setContent($this->getContent());
 			return $copy;
 		}
