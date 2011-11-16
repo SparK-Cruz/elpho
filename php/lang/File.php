@@ -28,7 +28,7 @@
 			$this->tipo = self::toMime($ext);
 		}
 		public function setContent($conteudo){
-			$this->conteudo = $conteudo;
+			$this->conteudo = new String($conteudo);
 		}
 		public function setType($tipo){
 			$this->tipo = $tipo;
@@ -62,6 +62,7 @@
 		}
 		
 		public function getSize(){
+			if(!is_object($this->conteudo)) $this->conteudo = new String($this->conteudo);
 			return $this->conteudo->length();
 		}
 		

@@ -28,10 +28,12 @@
 			$this->atualizarTipo($oldType);
 		}
 		public function setContent($conteudo){
+			if(is_object($conteudo)) $conteudo = $conteudo->toString();
 			$this->setResource(imagecreatefromstring($conteudo));
 		}
 		public function setResource($res){
 			$conteudo = "";
+			
 			ob_start();
 			switch($this->extensao){
 				case "jpg":
@@ -53,7 +55,7 @@
 			$this->width = imagesx($res);
 			$this->height = imagesy($res);
 			
-			$this->conteudo = $conteudo;
+			$this->conteudo = new String($conteudo);
 		}
 		
 		//get
@@ -68,10 +70,13 @@
 			return array_merge($info,array($this->getWidth(),$this->getHeight()));
 		}
 		public function getResource(){
-			return imagecreatefromstring($this->conteudo);
+			$conteudo = $this->conteudo;
+			if(is_object($this->conteudo)) $conteudo = $this->conteudo->toString();
+			return imagecreatefromstring($conteudo);
 		}
-		public function getCopy(){
+		public function copy(){
 			$copy = new Image();
+			$copy->setType($this->getType());
 			$copy->setContent($this->getContent());
 			return $copy;
 		}
@@ -99,8 +104,7 @@
 			
 			imagecopymerge($image,$nova,0,0,0,0,$size[0],$size[1],$transparencia);
 			
-			$retorno = $this->getCopy();
-			$retorno->setType($this->getType());
+			$retorno = $this->copy();
 			$retorno->setResource($image);
 			return $retorno;
 		}
@@ -115,8 +119,7 @@
 			$this->width = $width;
 			$this->height = $height;
 			
-			$retorno = $this->getCopy();
-			$retorno->setType($this->getType());
+			$retorno = $this->copy();
 			$retorno->setResource($nova);
 			return $retorno;
 		}
@@ -124,23 +127,9 @@
 			if($width == 0) $width = $this->width;
 			if($height == 0) $height = $this->height;
 			
-			list($x,$y) = $this->calcularPosicao($width,$height,$this->width,$this->height,$position);
+			list($x,$y) = $this->calcularPosicao($this->width,$this->height,$width,$height,$position);
 			
-			$nova = $this->criarImagem($width, $height);
-			$background = imagecolorallocatealpha($nova,0,0,0,127);
-			imagefill($nova,0,0,$background);
-			
-			$arquivo = $this->getResource();
-			
-			imagecopyresampled($nova,$arquivo,$x,$y,0,0,$this->width,$this->height,$this->width,$this->height);
-			
-			$this->width = $width;
-			$this->height = $height;
-			
-			$retorno = $this->getCopy();
-			$retorno->setType($this->getType());
-			$retorno->setResource($nova);
-			return $retorno;
+			return $this->crop($x,$y,$width,$height);
 		}
 		private function calcularPosicao($stageWidth,$stageHeight,$width,$height,$position){
 			$coords[0] = ($stageWidth/2)-($width/2);
@@ -167,11 +156,7 @@
 			
 			imagecopyresampled($nova,$arquivo,0,0,$x,$y,$this->width,$this->height,$this->width,$this->height);
 			
-			$this->width = $width;
-			$this->height = $height;
-			
-			$retorno = $this->getCopy();
-			$retorno->setType($this->getType());
+			$retorno = $this->copy();
 			$retorno->setResource($nova);
 			return $retorno;
 		}
