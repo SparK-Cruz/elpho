@@ -259,7 +259,7 @@
 		 */
 		public function replace($procura,$substituto,$limite=false){
 			$limite = $limite?$limite+1:$this->length();
-			return new String(implode($substituto,$this->split($procura,$limite)));
+			return $this->split($procura,$limite)->join($substituto);
 		}
 		
 		/**
