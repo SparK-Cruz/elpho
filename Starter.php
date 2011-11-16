@@ -23,12 +23,12 @@
 		}
 		
 		private static function callEntry($args=array()){
-			(!self::$entryMethod)? return;
+			if(!self::$entryMethod) return;
 			call_user_func(self::$entryMethod,$args);
 		}
 		
 		private static function callExit(){
-			(!self::$exitMethod)? return;
+			if(!self::$exitMethod) return;
 			call_user_func(self::$exitMethod);
 		}
 		
@@ -36,10 +36,10 @@
 			$entry = array($target,"main");
 			$exit = array($target,"cleanUp");
 			
-			(method_exists($entry[0],$entry[1]))?
+			if(method_exists($entry[0],$entry[1]))
 				self::registerEntry($entry);
 			
-			(method_exists($exit[0],$exit[1]))?
+			if(method_exists($exit[0],$exit[1]))
 				self::registerExit($exit);
 		}
 		
@@ -50,7 +50,7 @@
 		}
 		
 		public static function registerMain($filename=null){
-			(!$filename)? $filename = $_SERVER["SCRIPT_FILENAME"];
+			if(!$filename) $filename = $_SERVER["SCRIPT_FILENAME"];
 			$currentClass = basename($filename,".php");
 			self::registerEntryClass($currentClass);
 		}
