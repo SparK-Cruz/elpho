@@ -10,14 +10,10 @@
 		ini_set('display_errors', '1');
 		$GLOBALS["startup"] = microtime(true);
 	}
-	$elphoPath = dirname(__FILE__);
 	
-	$elphoDefaultEntries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
-	set_include_path(get_include_path().PATH_SEPARATOR.$elphoPath);
-	
+	require_once("Starter.php");
 	require_once("LoadManager.php");
 	require_once("topLevel.php");
 	
-	LoadManager::defineFolderMap("",$elphoDefaultEntries);
-	registerMain($_SERVER["SCRIPT_FILENAME"]);
+	Starter::start();
 ?>
