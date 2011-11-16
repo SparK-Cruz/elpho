@@ -82,7 +82,7 @@
 			return md5($this->getContent()->toString());
 		}
 		
-		public function getCopy(){
+		public function copy(){
 			$copy = new File();
 			$copy->setContent($this->getContent());
 			return $copy;
