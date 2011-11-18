@@ -11,7 +11,7 @@
 				$file = $path.'.php';
 				$base = basename($file);
 				
-				if(!is_dir($path)){
+				if(is_file($file)){
 					if(ord($base[0]) < ord('A') or ord($base[0]) > ord('Z')) continue; //uppercase check
 					self::importFile($root.'.php');
 					return;
