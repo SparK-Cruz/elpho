@@ -2,7 +2,7 @@
 	class LoadManager{
 		public static function import($root=false,$user=true){
 			if(!$root) return;
-			$root = str_replace("*",'',$root);
+			$root = str_replace("*",'',str_replace('.php','',$root));
 			
 			$pathList = self::getIncludePath();
 			foreach($pathList as $current){
@@ -19,11 +19,11 @@
 				
 				if(!file_exists($path)) continue;
 				if($user) self::registerInUse($root);
-				foreach(glob($path."*") as $path){
-					$path = str_replace($current,'',$path);
-					if(is_dir($current.$path)) $path .= "/";
-					if(substr($path,-4) == ".php") $path = substr($path,0,-4);
-					self::import($path,false);
+				foreach(self::listFolder($path) as $part){
+					$full = $root.$part;
+					if(is_dir($current.$full)) $full .= "/";
+					if(substr($full,-4) == ".php") $full = substr($full,0,-4);
+					self::import($full,false);
 				}
 			}
 		}
@@ -34,16 +34,31 @@
 			foreach($pathList as $current){
 				$current = str_replace("\\","/",$current)."/";
 				
-				foreach(glob($current.$targetPath."*") as $path){
-					$path = str_replace($current,'',$path);
-					
-					if(is_dir($current.$path)){
-						self::createDefineDir($path,$ignoredEntries);
+				foreach(self::listFolder($current.$targetPath) as $path){
+					$full = $targetPath.$path;
+					if(is_dir($current.$full)){
+						self::createDefineDir($full,$ignoredEntries);
 						continue;
 					}
 					self::createDefineFile($path);
 				}
 			}
+		}
+		private static function listFolder($pattern){
+			$list = array();
+			
+			call_user_func(function() use($pattern,&$list){
+				if(!is_dir($pattern)) return;
+				
+				$dir = opendir($pattern);
+				while($file = readdir($dir)){
+					if($file[0] == ".") continue;
+					$list[] = $file;
+				}
+				closedir($dir);
+			});
+			
+			return $list;
 		}
 		private static function createDefineFile($path){
 			$name = basename($path,".php");
@@ -52,7 +67,6 @@
 		private static function createDefineDir($path,$ignoredEntries){
 			$chave = basename($path);
 			if(!defined($chave)) define($chave,$chave."/");
-			
 			self::defineFolderMap($path."/",$ignoredEntries);
 		}
 		public static function getImportTree(){

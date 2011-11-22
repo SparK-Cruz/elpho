@@ -1,5 +1,5 @@
 <?php
-	import(php.extension.Embedable);
+	import(php.video.Embedable);
 	import(php.lang.Image);
 	
 	class VimeoVideo implements Embedable{

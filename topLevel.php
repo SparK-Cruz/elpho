@@ -5,6 +5,14 @@
 	function import($root=false){
 		LoadManager::import($root);
 	}
+	function call($callback,$args=null,$_=null){
+		$args = func_get_args();
+		array_shift($args);
+		return call_user_func_array($callback,$args);
+	}
+	function callArgs($callback,$args){
+		return call_user_func_array($callback,$args);
+	}
 	function alias($new,$old){
 		eval("class ".$new." extends ".$old."{}");
 	}

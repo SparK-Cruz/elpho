@@ -1,5 +1,5 @@
 <?php
-	import(php.extension.Embedable);
+	import(php.video.Embedable);
 	import(php.lang.Image);
 	
 	class YouTubeVideo implements Embedable{
@@ -130,9 +130,10 @@
 			$this->author = $handler->getElementsByTagName("author")->item(0)->getElementsByTagName("name")->item(0)->nodeValue;
 			$this->description = $handler->getElementsByTagName("content")->item(0)->nodeValue;
 			$this->duration = $handler->getElementsByTagName("duration")->item(0)->getAttribute("seconds");
-			$this->views = $handler->getElementsByTagName("statistics")->item(0)->getAttribute("viewCount");
-			$this->favorite = $handler->getElementsByTagName("statistics")->item(0)->getAttribute("favoriteCount");
-			$publishTimestamp = $handler->getElementsByTagName("publish")->item(0)->nodeValue;
+			$stats = $handler->getElementsByTagName("statistics")->item(0);
+			$this->views = $stats->getAttribute("viewCount");
+			$this->favorite = $stats->getAttribute("favoriteCount");
+			$publishTimestamp = $handler->getElementsByTagName("published")->item(0)->nodeValue;
 			$this->publishDate = substr($publishTimestamp,0,10);
 			$this->publishTime = substr($publishTimestamp,strpos($publishTimestamp,"T")+1,8);
 		}

@@ -1,7 +1,7 @@
 <?php
 	import(php.lang.String);
-	import(php.extension.YouTubeVideo);
-	import(php.extension.VimeoVideo);
+	import(php.video.YouTubeVideo);
+	import(php.video.VimeoVideo);
 	
 	abstract class Video{
 		public static function create($id){
