@@ -2,7 +2,7 @@
 	class LoadManager{
 		private static $ignoredEntries="?";
 		
-		public static function import($root=false,$user=true){
+		public static function import($root=false,$level=0){
 			if(!$root) return;
 			$root = str_replace("*",'',str_replace('.php','',$root));
 			
@@ -20,12 +20,12 @@
 				}
 				
 				if(!file_exists($path)) continue;
-				if($user) self::registerInUse($root);
+				if(!$level) self::registerInUse($root);
 				foreach(self::listFolder($path) as $part){
 					$full = $root.$part;
 					if(is_dir($current.$full)) $full .= "/";
 					if(substr($full,-4) == ".php") $full = substr($full,0,-4);
-					self::import($full,false);
+					self::import($full,$level+1);
 				}
 			}
 		}
@@ -33,6 +33,18 @@
 			self::$ignoredEntries = $ignoredEntries;
 		}
 		public static function defineFolderMap($targetPath=""){
+			//safety check
+			$proceed = false;
+			$trace = debug_backtrace();
+			if(isset($trace[1]))
+			switch($trace[1]["class"]){
+				case "Starter":
+				case "LoadManager":
+					$proceed = true;
+				break;
+			}
+			if(!$proceed) throw new Exception("This method cannot be called in userland!");
+			
 			$includePath = str_replace(PATH_SEPARATOR.self::$ignoredEntries,'',get_include_path());
 			$pathList = explode(PATH_SEPARATOR,$includePath);
 			
