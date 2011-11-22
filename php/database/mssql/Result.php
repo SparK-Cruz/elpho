@@ -15,9 +15,6 @@
 		public function fetchAssociative(){
 			return mssql_fetch_assoc($this->result);
 		}
-		public function fetchField($field){
-			return mssql_fetch_field($this->result,$field);
-		}
 		public function fetchArray($type){
 			return mssql_fetch_array($this->result,$type);
 		}
@@ -44,9 +41,6 @@
 		}
 		public function getFieldName($field){
 			return mssql_field_name($this->result,$field);
-		}
-		public function getFieldType($field){
-			return mssql_field_type($this->result,$field);
 		}
 		public function getFieldCount(){
 			return mssql_num_fields($this->result);

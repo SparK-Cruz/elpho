@@ -1,5 +1,7 @@
 <?php
 	class LoadManager{
+		private static $ignoredEntries="?";
+		
 		public static function import($root=false,$user=true){
 			if(!$root) return;
 			$root = str_replace("*",'',str_replace('.php','',$root));
@@ -27,8 +29,11 @@
 				}
 			}
 		}
-		public static function defineFolderMap($targetPath="",$ignoredEntries="?"){
-			$includePath = str_replace($ignoredEntries.PATH_SEPARATOR,'',get_include_path());
+		public static function ignorePaths($ignoredEntries="?"){
+			self::$ignoredEntries = $ignoredEntries;
+		}
+		public static function defineFolderMap($targetPath=""){
+			$includePath = str_replace(PATH_SEPARATOR.self::$ignoredEntries,'',get_include_path());
 			$pathList = explode(PATH_SEPARATOR,$includePath);
 			
 			foreach($pathList as $current){
@@ -37,7 +42,7 @@
 				foreach(self::listFolder($current.$targetPath) as $path){
 					$full = $targetPath.$path;
 					if(is_dir($current.$full)){
-						self::createDefineDir($full,$ignoredEntries);
+						self::createDefineDir($full);
 						continue;
 					}
 					self::createDefineFile($path);
@@ -64,10 +69,10 @@
 			$name = basename($path,".php");
 			if(!defined($name)) define($name,$name);
 		}
-		private static function createDefineDir($path,$ignoredEntries){
+		private static function createDefineDir($path){
 			$chave = basename($path);
 			if(!defined($chave)) define($chave,$chave."/");
-			self::defineFolderMap($path."/",$ignoredEntries);
+			self::defineFolderMap($path."/");
 		}
 		public static function getImportTree(){
 			$report = $GLOBALS['imports'];
@@ -178,7 +183,8 @@
 			$uses = self::getCurrentUseList();
 			$newUses = array();
 			
-			$includePath = explode(PATH_SEPARATOR,get_include_path());
+			$includePath = explode(PATH_SEPARATOR,str_replace(PATH_SEPARATOR.self::$ignoredEntries,'',get_include_path()));
+			
 			foreach($includePath as $caminho){
 				foreach($uses as $use){
 					$newUses[] = trim($caminho."\\".$use);

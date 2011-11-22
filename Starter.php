@@ -6,9 +6,10 @@
 		public static function start(){
 			$path = dirname(__FILE__);
 			$defaultEntries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
-			set_include_path(get_include_path().PATH_SEPARATOR.$path);
+			set_include_path(".".PATH_SEPARATOR.$path.PATH_SEPARATOR.$defaultEntries);
 			
-			LoadManager::defineFolderMap("",$defaultEntries);
+			LoadManager::ignorePaths($defaultEntries);
+			LoadManager::defineFolderMap("");
 			
 			self::registerMain();
 			register_shutdown_function(array(Starter,"callPrimaryMethods"));
