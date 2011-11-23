@@ -113,8 +113,8 @@
 		public function getLinkImageS(){
 			return $this->imageSmall;
 		}
-		public function getEmbedCode(){
-			return '<iframe src="http://player.vimeo.com/video/'.$this->id.'?portrait=0" width="586" height="360" frameborder="0"></iframe>';
+		public function getEmbedCode($width=586,$height=360){
+			return '<iframe src="http://player.vimeo.com/video/'.$this->id.'?portrait=0" width="'.$width.'" height="'.$height.'" frameborder="0"></iframe>';
 		}
 		public function getPlayer(){
 			return 'http://player.vimeo.com/video/'.$this->id;

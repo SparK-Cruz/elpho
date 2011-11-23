@@ -20,7 +20,7 @@
 		public function getLinkImageL();
 		public function getLinkImageM();
 		public function getLinkImageS();
-		public function getEmbedCode();
+		public function getEmbedCode($width=586,$height=360);
 		public function getPlayer();
 	}
 ?>

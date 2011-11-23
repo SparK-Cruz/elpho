@@ -112,8 +112,8 @@
 		public function getLinkImageS(){
 			return String::format(self::IMAGE_URL,$this->id,2);
 		}
-		public function getEmbedCode(){
-			return '<iframe title="YouTube video player" width="586" height="360" src="http://www.youtube.com/embed/'.$this->id.'?rel=0" frameborder="0" allowfullscreen></iframe>';
+		public function getEmbedCode($width=586,$height=360){
+			return '<iframe title="YouTube video player" width="'.$width.'" height="'.$height.'" src="http://www.youtube.com/embed/'.$this->id.'?rel=0" frameborder="0" allowfullscreen></iframe>';
 		}
 		public function getPlayer(){
 			return 'http://www.youtube.com/v/'.$this->id;
