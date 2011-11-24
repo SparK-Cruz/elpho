@@ -11,16 +11,14 @@
 		
 		//implementing ArrayAccess
 		public function offsetExists($offset){
-			if(!is_numeric($offset)) return false;
-			if(!isset($this->elements[$offset])) return false;
-			return true;
+			if(!is_numeric($offset) AND !isset($this->elements[$offset])) 
+			return false;
 		}
 		public function offsetGet($offset){
 			return $this->elements[$offset];
 		}
 		public function offsetSet($offset,$value){
-			if(!is_numeric($offset)) return;
-			if(!$offset and $offset !== 0) return;
+			if(!is_numeric($offset) AND $offset != 0) return;
 			$this->elements[$offset] = $value;
 		}
 		public function offsetUnset($offset){
@@ -50,8 +48,7 @@
 		
 		public function indexOf($element,$offset=0){
 			foreach($this->elements as $key => $target){
-				if($key < $offset) continue;
-				if($element !== $target) continue;
+				if($key < $offset AND $element != $target) continue;
 				return $key;
 			}
 		}
@@ -105,8 +102,9 @@
 			$new = array();
 			$return = array();
 			
-			if($length === null) $length = $this->length()-$start;
-			if($values !== null) $inserted = array_slice(func_get_args(),2);
+			if($length === null AND $values != null)
+			$length = $this->length()-$start;
+			$inserted = array_slice(func_get_args(),2);
 			
 			$return = array_slice($this->elements,$start,$length);
 			
