@@ -1,7 +1,11 @@
-<?php
-	class Starter{
+﻿<?php
+	final class Starter{
 		private static $entryMethod;
 		private static $exitMethod;
+		
+		public function __constructor(){
+			throw new Exception("Static classes cannot be instantiated.");
+		}
 		
 		public static function start(){
 			$path = dirname(__FILE__);

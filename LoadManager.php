@@ -1,6 +1,10 @@
 <?php
-	class LoadManager{
+	final class LoadManager{
 		private static $ignoredEntries="?";
+		
+		public function __constructor(){
+			throw new Exception("Static classes cannot be instantiated.");
+		}
 		
 		public static function import($root=false,$level=0){
 			if(!$root) return;
