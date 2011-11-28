@@ -29,9 +29,10 @@
 		LoadManager::autoload($classe);
 	}
 	
-	function checkOverload($arguments,$type,$_=null){
+	function checkOverload($type,$_=null){
+		$trace = debug_backtrace();
 		$types = func_get_args();
-		$arguments = array_shift($types);
+		$arguments = $trace[1]["args"];
 		
 		$i = 0;
 		foreach($types as $type){
