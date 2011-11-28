@@ -145,17 +145,14 @@
 		
 		private function getLastKey(){
 			$lastKey = false;
-			foreach($this->elements as $key => $element)
-				$lastKey = $key;
-			
+			$keys = array_reverse(array_keys($this->elements));
+			if(isset($keys[0])) $lastKey = $keys[0];
 			return $lastKey;
 		}
 		private function getFirstKey(){
 			$firstKey = 0;
-			foreach($this->elements as $key => $element){
-				$firstKey = $key;
-				break;
-			}
+			$keys = array_keys($this->elements);
+			if(isset($keys[0])) $firstKey = $keys[0];
 			return $firstKey;
 		}
 		private function flushKeys(){
