@@ -1,10 +1,6 @@
 <?php
-	final class LoadManager{
+	final class LoadManager extends StaticType{
 		private static $ignoredEntries="?";
-		
-		public function __construct(){
-			throw new Exception("Static classes cannot be instantiated.");
-		}
 		
 		public static function import($root=false,$level=0){
 			if(!$root) return;

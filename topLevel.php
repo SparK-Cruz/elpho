@@ -16,9 +16,14 @@
 	function alias($new,$old){
 		eval("class ".$new." extends ".$old."{}");
 	}
-	function named($constructor,$class){
+	function named($constructor,$class=null){
+		if(!$class){
+			$trace = debug_backtrace();
+			$class = basename($trace[0]["file"],".php");
+		}
+		
 		$name = $class."_".$constructor;
-		eval("class ".$name." extends ".$class."{ public function ".$name."(){ call_user_func_array(array(parent,".$name."), func_get_args()); } }");
+		eval("class ".$name." extends ".$class."{ public function __construct(){ call_user_func_array(array(parent,_".$constructor."), func_get_args()); } }");
 	}
 	function __autoload($classe){
 		LoadManager::autoload($classe);

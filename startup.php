@@ -11,6 +11,7 @@
 		$GLOBALS["startup"] = microtime(true);
 	}
 	
+	require_once("php/lang/StaticType.php");
 	require_once("Starter.php");
 	require_once("LoadManager.php");
 	require_once("topLevel.php");

@@ -1,11 +1,7 @@
 ﻿<?php
-	final class Starter{
+	final class Starter extends StaticType{
 		private static $entryMethod;
 		private static $exitMethod;
-		
-		public function __construct(){
-			throw new Exception("Static classes cannot be instantiated.");
-		}
 		
 		public static function start(){
 			$path = dirname(__FILE__);
