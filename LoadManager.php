@@ -2,7 +2,7 @@
 	final class LoadManager{
 		private static $ignoredEntries="?";
 		
-		public function __constructor(){
+		public function __construct(){
 			throw new Exception("Static classes cannot be instantiated.");
 		}
 		

@@ -3,7 +3,7 @@
 		private static $entryMethod;
 		private static $exitMethod;
 		
-		public function __constructor(){
+		public function __construct(){
 			throw new Exception("Static classes cannot be instantiated.");
 		}
 		
