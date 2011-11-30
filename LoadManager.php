@@ -64,8 +64,6 @@
 		private static function listFolder($pattern){
 			$list = array();
 			
-			$pattern = str_replace("¨","/",$pattern);
-			
 			call_user_func(function() use($pattern,&$list){
 				if(!is_dir($pattern)) return;
 				
