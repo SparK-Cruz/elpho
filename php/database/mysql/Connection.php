@@ -33,7 +33,8 @@
 		public function connect($server=false,$user=false,$pass=false,$flags=0){
 			$this->close();
 			$this->link = @mysql_connect($server,$user,$pass,true,$flags);
-			if(!$this->link) $this->throwError("Failed to connect. Check the host address, connectivity and passwords.","c00");
+			
+			if(!is_resource($this->link)) $this->throwError("Failed to connect. Check the host address, connectivity and passwords.","c00");
 		}
 		
 		/**
@@ -273,7 +274,7 @@
 			return $success;
 		}
 		private function throwError($erro="Uknown Error",$numero="MissingNo."){
-			if($this->link){
+			if(is_resource($this->link)){
 				$erro = mysql_error($this->link);
 				$numero = mysql_errno($this->link);
 			}

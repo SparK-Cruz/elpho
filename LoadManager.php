@@ -64,6 +64,8 @@
 		private static function listFolder($pattern){
 			$list = array();
 			
+			$pattern = str_replace("¨","/",$pattern);
+			
 			call_user_func(function() use($pattern,&$list){
 				if(!is_dir($pattern)) return;
 				
@@ -83,7 +85,7 @@
 		}
 		private static function createDefineDir($path){
 			$chave = basename($path);
-			if(!defined($chave)) define($chave,$chave."/");
+			if(!defined($chave)) define($chave,$chave."\\");
 			self::defineFolderMap($path."/");
 		}
 		public static function getImportTree(){
@@ -140,20 +142,16 @@
 			if(strpos($classe,"\\") === false) return;
 			if(class_exists($classe)) return;
 			
-			$valid = array("class","interface");
 			$classe = str_replace("\\","/",$classe);
 			$includePath = self::getIncludePath();
 			
 			foreach($includePath as $current){
 				$current = str_replace("\\","/",$current)."/";
 				
-				foreach($valid as $ext){
-					$nome = $classe.".".$ext.".php";
-					
-					if(!file_exists($current.$nome)) continue;
-					self::importNamespacedFile($current.$nome,dirname($nome));
-					return;
-				}
+				$nome = $classe.".php";
+				if(!file_exists($current.$nome)) continue;
+				self::importNamespacedFile($current.$nome,dirname($nome));
+				return;
 			}
 		}
 		
@@ -162,15 +160,40 @@
 				self::importFile($path);
 				return;
 			}
+			$classe = basename($path,".php");
 			
 			$conteudo = file_get_contents($path);
-			$namespace = str_replace("/","\\",$namespace);
-			$conteudo = str_replace("<?php", "<?php namespace ".$namespace."; ", $conteudo);
+			$imports = self::captureImports($conteudo);
 			
-			$arquivo = "T".date("YmdHis").round(microtime()).".php";
+			$namespace = str_replace("/","\\",$namespace);
+			
+			$conteudo = str_replace("<?php","<?php namespace ".$namespace.";",$conteudo);
+			$conteudo = str_replace("function ".$classe,"function __construct(){ call_user_func_array(array(self,".$classe."),func_get_args()); }\nfunction ".$classe,$conteudo);
+			
+			$arquivo = "T".date("His").$classe.round(microtime(false)*1000).".php";
 			file_put_contents($arquivo,$conteudo);
-			self::importFile($arquivo);
+			try{
+				self::importFile($arquivo);
+			}catch(Exception $e){
+				unlink($arquivo);
+				throw $e;
+			}
 			unlink($arquivo);
+		}
+		private static function captureImports($fileContents){
+			$imports = array();
+			$lastImport = 0;
+			$pattern = array("import(",");");
+			while(($pos = strpos($fileContents,$pattern[0],$lastImport)) !== false){
+				$start = $pos+strlen($pattern[0]);
+				$end = strpos($fileContents,$pattern[1],$start)-$start;
+				if(!$end or $end < 0) break;
+				$import = substr($fileContents,$start,$end);
+				
+				$imports[] = $import;
+				$lastImport = $start+$end;
+			}
+			return $imports;
 		}
 		private static function registerInUse($path){
 			self::startUseTree();
@@ -179,7 +202,7 @@
 			$uses = &$GLOBALS['uses'];
 			$control = &$uses[$arquivo];
 			
-			$path = substr(str_replace("/","\\", $path),0,strlen($path)-1);
+			$path = substr(str_replace("/","\\", $path),0);
 			$control[$path] = count($control);
 		}
 		private static function getCurrentUseList(){
