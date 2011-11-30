@@ -1,5 +1,5 @@
 <?php
-	import(php.lang.File);
+	import(php.io.File);
 	
 	class Image extends File{
 		protected $width;

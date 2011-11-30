@@ -83,7 +83,8 @@
 		}
 		
 		public function copy(){
-			$copy = new self();
+			$class = get_class($this);
+			$copy = new $class;
 			$copy->setType($this->getType());
 			$copy->setContent($this->getContent());
 			return $copy;
