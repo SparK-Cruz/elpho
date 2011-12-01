@@ -166,7 +166,7 @@
 			$globalClasses = array();
 			foreach($imports as $import){
 				$import = str_replace(".","/",$import);
-				if(strpos($import,$namespace) !== false) continue;
+				if(strpos("/".$import,"/".$namespace."/") !== false) continue;
 				$globalClasses[] = basename($import);
 			}
 			
