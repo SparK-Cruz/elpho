@@ -204,7 +204,7 @@
 			}
 			return $imports;
 		}
-		private static function registerInUse($path){
+		public static function registerInUse($path){
 			self::startUseTree();
 			
 			$arquivo = $_SERVER["SCRIPT_FILENAME"];

@@ -5,6 +5,13 @@
 	function import($root=false){
 		LoadManager::import($root);
 	}
+	function usePack($root){
+		LoadManager::registerInUse($root);
+	}
+	function __autoload($classe){
+		LoadManager::autoload($classe);
+	}
+	
 	function call($callback,$args=null,$_=null){
 		$args = func_get_args();
 		array_shift($args);
@@ -24,9 +31,6 @@
 		
 		$name = $class."_".$constructor;
 		eval("class ".$name." extends ".$class."{ public function __construct(){ call_user_func_array(array(parent,_".$constructor."), func_get_args()); } }");
-	}
-	function __autoload($classe){
-		LoadManager::autoload($classe);
 	}
 	
 	function checkOverload($type,$_=null){
