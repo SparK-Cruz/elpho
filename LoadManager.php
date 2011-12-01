@@ -163,10 +163,21 @@
 			$conteudo = file_get_contents($path);
 			$imports = self::captureImports($conteudo);
 			
+			$globalClasses = array();
+			foreach($imports as $import){
+				$import = str_replace(".","/",$import);
+				if(strpos($import,$namespace) !== false) continue;
+				$globalClasses[] = basename($import);
+			}
+			
 			$namespace = str_replace("/","\\",$namespace);
 			
 			$conteudo = str_replace("<?php","<?php namespace ".$namespace.";",$conteudo);
 			$conteudo = str_replace("function ".$classe,"function __construct(){ call_user_func_array(array(self,".$classe."),func_get_args()); }\nfunction ".$classe,$conteudo);
+			
+			foreach($globalClasses as $globalClass){
+				$conteudo = str_replace(" ".$globalClass," \\".$globalClass,$conteudo);
+			}
 			
 			$arquivo = "T".date("His").$classe.round(microtime(false)*1000).".php";
 			file_put_contents($arquivo,$conteudo);
