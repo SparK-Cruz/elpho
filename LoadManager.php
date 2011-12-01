@@ -211,7 +211,7 @@
 			$uses = &$GLOBALS['uses'];
 			$control = &$uses[$arquivo];
 			
-			$path = substr(str_replace("/","\\", $path),0);
+			$path = str_replace("/","\\", $path);
 			$control[$path] = count($control);
 		}
 		private static function getCurrentUseList(){
