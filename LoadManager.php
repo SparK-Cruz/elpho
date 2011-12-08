@@ -5,7 +5,6 @@
 		public static function import($root=false,$level=0){
 			if(!$root) return;
 			$root = str_replace("*",'',str_replace('.php','',$root));
-			$root = str_replace("\\","/",$root);
 			
 			$pathList = self::getIncludePath();
 			foreach($pathList as $current){
@@ -84,7 +83,7 @@
 		}
 		private static function createDefineDir($path){
 			$chave = basename($path);
-			if(!defined($chave)) define($chave,$chave."\\");
+			if(!defined($chave)) define($chave,$chave."/");
 			self::defineFolderMap($path."/");
 		}
 		public static function getImportTree(){
