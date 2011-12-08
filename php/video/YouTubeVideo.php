@@ -1,6 +1,6 @@
 <?php
 	import(php.video.Embedable);
-	import(php.lang.Image);
+	import(php.io.Image);
 	
 	class YouTubeVideo implements Embedable{
 		private $id;
