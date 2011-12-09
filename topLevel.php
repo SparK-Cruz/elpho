@@ -38,8 +38,9 @@
 		$types = func_get_args();
 		$arguments = $trace[1]["args"];
 		
-		$i = 0;
+		$i = -1;
 		foreach($types as $type){
+			$i++;
 			$argument = $arguments[$i];
 			
 			if(is_object($argument)){
@@ -49,7 +50,6 @@
 			
 			$type = ($type=="float"?"double":$type);
 			if(gettype($argument) !== $type) return false;
-			$i++;
 		}
 		return true;
 	}
