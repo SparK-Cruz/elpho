@@ -1,7 +1,8 @@
 <?php
 	import(php.lang.String);
-	import(php.video.YouTubeVideo);
-	import(php.video.VimeoVideo);
+	import(php.io.video.YouTubeVideo);
+	import(php.io.video.VimeoVideo);
+	import(php.io.IoException);
 	
 	abstract class Video{
 		public static function create($id){
@@ -13,16 +14,19 @@
 			if($url->contains("http")){
 				if($url->contains("vimeo"))
 					return "VimeoVideo";
-				return "YouTubeVideo";
+				if($url->contains("youtube"))
+					return "YouTubeVideo";
+				
+				throw new IoException("Video service not supported.");
 			}
 			
 			switch($url->length()){
-				/*case 11:
-					return "YouTubeVideo";*/
+				case 11:
+					return "YouTubeVideo";
 				case 8:
 					return "VimeoVideo";
 				default:
-					return "YouTubeVideo";
+					throw new IoException("Couldn't resolve ID string. Video service not supported.");
 			}
 		}
 	}

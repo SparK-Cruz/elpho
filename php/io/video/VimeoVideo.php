@@ -1,6 +1,7 @@
 <?php
-	import(php.video.Embedable);
-	import(php.io.Image);
+	import(php.io.video.Embedable);
+	import(php.io.file.Image);
+	import(php.io.IoException);
 	
 	class VimeoVideo implements Embedable{
 		private $id;
@@ -17,9 +18,14 @@
 		private $imageMedium;
 		private $imageLarge;
 		
+		private $isLoaded;
+		
 		//constructor
 		public function VimeoVideo($id=""){
 			if($id == "") return;
+			
+			$this->isLoaded = false;
+			
 			if(strpos($id,".com/") !== false){
 				$this->setUrl($id);
 				return;
@@ -31,7 +37,6 @@
 		//set
 		public function setId($id){
 			$this->id = $id;
-			$this->grabInfo($id);
 		}
 		public function setUrl($url){
 			$anchor = strpos($url,".com/")+5;
@@ -48,24 +53,31 @@
 			return $this->id;
 		}
 		public function getTitle(){
+			$this->lazyApiLoad();
 			return $this->title;
 		}
 		public function getAuthor(){
+			$this->lazyApiLoad();
 			return $this->userName;
 		}
 		public function getDescription(){
+			$this->lazyApiLoad();
 			return $this->description;
 		}
 		public function getPublishTime(){
+			$this->lazyApiLoad();
 			return $this->uploadTime;
 		}
 		public function getPublishDate(){
+			$this->lazyApiLoad();
 			return $this->uploadDate;
 		}
 		public function getTime(){
+			$this->lazyApiLoad();
 			return $this->duration;
 		}
 		public function getTimeString(){
+			$this->lazyApiLoad();
 			$time = $this->duration;
 			$seconds = floor($time % 60);
 			$minutes = floor(($time/60) % 60);
@@ -78,9 +90,11 @@
 			return $hours.":".$minutes.":".$seconds;
 		}
 		public function getFavorite(){
+			$this->lazyApiLoad();
 			return $this->likes;
 		}
 		public function getViews(){
+			$this->lazyApiLoad();
 			return $this->plays;
 		}
 		public function getUrl(){
@@ -105,12 +119,15 @@
 			return $this->getLinkImageL();
 		}
 		public function getLinkImageL(){
+			$this->lazyApiLoad();
 			return $this->imageLarge;
 		}
 		public function getLinkImageM(){
+			$this->lazyApiLoad();
 			return $this->imageMedium;
 		}
 		public function getLinkImageS(){
+			$this->lazyApiLoad();
 			return $this->imageSmall;
 		}
 		public function getEmbedCode($width=586,$height=360){
@@ -121,11 +138,20 @@
 		}
 		
 		//extra
+		/**
+		 * Only used on API dependent methods
+		 */
+		private function lazyApiLoad(){
+			if($this->isLoaded) return;
+			$this->grabInfo();
+			$this->isLoaded = true;
+		}
+		
 		private function grabInfo(){
 			$handler = new DOMDocument();
 			$result = @$handler->load($this->getApi());
 			
-			if(!$result) throw new Exception("Link de Vídeo invalido.");
+			if(!$result) throw new IoException("Can't connect to API.");
 			
 			$this->title = $handler->getElementsByTagName("title")->item(0)->nodeValue;
 			$this->userName = $handler->getElementsByTagName("user_name")->item(0)->nodeValue;

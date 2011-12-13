@@ -1,6 +1,7 @@
 <?php
-	import(php.video.Embedable);
-	import(php.io.Image);
+	import(php.io.video.Embedable);
+	import(php.io.file.Image);
+	import(php.io.IoException);
 	
 	class YouTubeVideo implements Embedable{
 		private $id;
@@ -13,11 +14,15 @@
 		private $publishDate;
 		private $publishTime;
 		
+		private $isLoaded;
+		
 		const IMAGE_URL = 'http://img.youtube.com/vi/%s/%s.jpg';
 		
 		//constructor
 		public function YouTubeVideo($id=""){
 			if($id == "") return;
+			
+			$this->isLoaded = false;
 			
 			if(strpos($id,"v=") !== false){
 				$this->setUrl($id);
@@ -30,7 +35,6 @@
 		//set
 		public function setId($id){
 			$this->id = $id;
-			$this->grabInfo($id);
 		}
 		public function setUrl($url){
 			$anchor = strpos($url,"v=")+2;
@@ -47,24 +51,31 @@
 			return $this->id;
 		}
 		public function getTitle(){
+			$this->lazyApiLoad();
 			return $this->title;
 		}
 		public function getAuthor(){
+			$this->lazyApiLoad();
 			return $this->author;
 		}
 		public function getDescription(){
+			$this->lazyApiLoad();
 			return $this->description;
 		}
 		public function getPublishTime(){
+			$this->lazyApiLoad();
 			return $this->publishTime;
 		}
 		public function getPublishDate(){
+			$this->lazyApiLoad();
 			return $this->publishDate;
 		}
 		public function getTime(){
+			$this->lazyApiLoad();
 			return $this->duration;
 		}
 		public function getTimeString(){
+			$this->lazyApiLoad();
 			$time = $this->duration;
 			$seconds = floor($time % 60);
 			$minutes = floor(($time/60) % 60);
@@ -77,9 +88,11 @@
 			return $hours.":".$minutes.":".$seconds;
 		}
 		public function getFavorite(){
+			$this->lazyApiLoad();
 			return $this->favorite;
 		}
 		public function getViews(){
+			$this->lazyApiLoad();
 			return $this->views;
 		}
 		public function getUrl(){
@@ -120,11 +133,20 @@
 		}
 		
 		//extra
+		/**
+		 * Only used on API dependent methods
+		 */
+		private function lazyApiLoad(){
+			if($this->isLoaded) return;
+			$this->grabInfo();
+			$this->isLoaded = true;
+		}
+		
 		private function grabInfo(){
 			$handler = new DOMDocument();
 			$result = @$handler->load($this->getApi());
 			
-			if(!$result) throw new Exception("Link de Vídeo invalido.");
+			if(!$result) throw new IoException("Can't connect to API.");
 			
 			$this->title = $handler->getElementsByTagName("title")->item(0)->nodeValue;
 			$this->author = $handler->getElementsByTagName("author")->item(0)->getElementsByTagName("name")->item(0)->nodeValue;
