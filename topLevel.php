@@ -8,6 +8,9 @@
 	function usePack($root){
 		LoadManager::registerInUse($root);
 	}
+	function loadModule($path){
+		LoadManager::loadModule($path);
+	}
 	function __autoload($classe){
 		LoadManager::autoload($classe);
 	}

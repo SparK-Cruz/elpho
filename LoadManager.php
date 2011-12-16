@@ -2,6 +2,15 @@
 	final class LoadManager extends StaticType{
 		private static $ignoredEntries="?";
 		
+		public static function loadModule($path,$runStartup=true){
+			$entries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
+			set_include_path(".".PATH_SEPARATOR.$path.PATH_SEPARATOR.$entries);
+			self::defineFolderMap("");
+			if($runStartup){
+				$file = $path."/startup.php";
+				if(file_exists($file)) include($file);
+			}
+		}
 		public static function import($root=false,$level=0){
 			if(!$root) return;
 			$root = str_replace("*",'',str_replace('.php','',$root));
@@ -14,8 +23,8 @@
 				$base = basename($file);
 				
 				if(is_file($file)){
-					if(ord($base[0]) < ord('A') or ord($base[0]) > ord('Z')) continue; //uppercase check
-					self::importFile($root.'.php');
+					if(!preg_match('/^[A-Z]/',$base)) continue; //uppercase check
+					self::importFile($file);
 					return;
 				}
 				
@@ -190,19 +199,12 @@
 			unlink($arquivo);
 		}
 		private static function captureImports($fileContents){
-			$imports = array();
-			$lastImport = 0;
-			$pattern = array("import(",");");
-			while(($pos = strpos($fileContents,$pattern[0],$lastImport)) !== false){
-				$start = $pos+strlen($pattern[0]);
-				$end = strpos($fileContents,$pattern[1],$start)-$start;
-				if(!$end or $end < 0) break;
-				$import = substr($fileContents,$start,$end);
-				
-				$imports[] = $import;
-				$lastImport = $start+$end;
-			}
-			return $imports;
+			$matches = array();
+			preg_match_all('/import ?\([^;]+\)/', $fileContents, $matches);
+			$matches = array_map(function($item){
+				return preg_replace('/(import ?\()|(\))/', '', $item);
+			},$matches[0]);
+			return $matches;
 		}
 		public static function registerInUse($path){
 			self::startUseTree();

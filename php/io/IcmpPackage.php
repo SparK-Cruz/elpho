@@ -1,6 +1,6 @@
 <?php
 	import(php.lang.String);
-	import(php.extension.Console);
+	import(php.io.Socket);
 	
 	class IcmpPackage{
 		private $data = "";
@@ -11,7 +11,7 @@
 		private $sequence = "\x00\x00";
 		
 		public function IcmpPackage($type,$data=null){
-			if(is_subclass_of($type,php.io.Socket)){
+			if(is_a($type,Socket)){
 				$type = $type->read(255);
 				
 				$this->setCode($type->substr(1,1));
