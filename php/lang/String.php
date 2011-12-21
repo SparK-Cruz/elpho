@@ -98,6 +98,14 @@
 		}
 		
 		/**
+		 * Retorna uma cópia da String com os caracteres em ordem inversa
+		 * @return String
+		 */
+		public function reverse(){
+			return new String(strrev($this->value));
+		}
+		
+		/**
 		 * Retorna verdadeiro caso a sequencia seja encontrada dentro da String (case-sensitive)
 		 * @param string $sequence Sequencia à ser procurada dentro da String
 		 * @return bool
