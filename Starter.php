@@ -11,7 +11,6 @@
 			LoadManager::loadModule($path,false);
 			
 			self::registerMain();
-			register_shutdown_function(array(Starter,"callPrimaryMethods"));
 		}
 		
 		private static function registerEntry($method){
@@ -44,9 +43,13 @@
 		}
 		
 		public static function callPrimaryMethods(){
-			chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
-			self::callEntry($_REQUEST);
-			self::callExit();
+			try{
+				chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
+				self::callEntry($_REQUEST);
+				self::callExit();
+			}catch(Exception $e){
+				echo $e->getMessage();
+			}
 		}
 		
 		public static function registerMain($filename=null){
