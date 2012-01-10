@@ -9,8 +9,9 @@
 			LoadManager::ignorePaths($defaultEntries);
 			
 			LoadManager::loadModule($path,false);
-			
 			self::registerMain();
+			
+			register_shutdown_function(array(Starter,"callPrimaryMethods"));
 		}
 		
 		private static function registerEntry($method){

@@ -5,7 +5,7 @@
 	 * 
 	 * v0.2
 	 */
-	if(defined("DEBUG") or true){
+	if(defined("DEBUG")){
 		error_reporting(E_ALL);
 		ini_set('display_errors', '1');
 		$GLOBALS["startup"] = microtime(true);
@@ -17,6 +17,4 @@
 	require_once("topLevel.php");
 	
 	Starter::start();
-	
-	register_shutdown_function(array(Starter,"callPrimaryMethods"));
 ?>
