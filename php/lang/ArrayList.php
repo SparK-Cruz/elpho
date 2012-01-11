@@ -59,7 +59,7 @@
 			$lastIndex = $this->getLastKey();
 			if($offset === null) $offset = $lastIndex;
 			$offset = $lastIndex - $offset;
-			$reverse = $this-reverse();
+			$reverse = $this->reverse();
 			$index = $reverse->indexOf($element,$offset);
 			$index = $lastIndex - $index;
 			return $index;
