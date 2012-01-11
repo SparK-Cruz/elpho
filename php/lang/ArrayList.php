@@ -31,6 +31,9 @@
 			if($elements === null) return;
 			$this->elements = func_get_args();
 		}
+		public function _from($array){
+			$this->elements = $array;
+		}
 		
 		public function merge($array){
 			if(is_object($array)) $array = $array->toPrimitive();
@@ -39,12 +42,8 @@
 		
 		public static function create($array){
 			if(is_a($array,ArrayList)) $array = $array->toPrimitive();
-			$list = new ArrayList();
 			
-			if(count($array))
-				call_user_func_array(array($list,"push"), $array);
-			
-			return $list;
+			return new ArrayList_from($array);
 		}
 		
 		public function indexOf($element,$offset=0){
@@ -181,4 +180,6 @@
 			return $this->toString();
 		}
 	}
+	
+	named('from');
 ?>
