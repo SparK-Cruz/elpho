@@ -41,19 +41,7 @@
 		public static function ignorePaths($ignoredEntries="?"){
 			self::$ignoredEntries = $ignoredEntries;
 		}
-		public static function defineFolderMap($targetPath=""){
-			//safety check
-			$proceed = false;
-			$trace = debug_backtrace();
-			if(isset($trace[1]))
-			switch($trace[1]["class"]){
-				case "Starter":
-				case "LoadManager":
-					$proceed = true;
-				break;
-			}
-			if(!$proceed) throw new Exception("This method cannot be called in userland!");
-			
+		private static function defineFolderMap($targetPath=""){
 			$includePath = str_replace(PATH_SEPARATOR.self::$ignoredEntries,'',get_include_path());
 			$pathList = explode(PATH_SEPARATOR,$includePath);
 			
