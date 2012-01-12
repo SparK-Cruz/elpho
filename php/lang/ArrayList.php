@@ -68,11 +68,7 @@
 			return self::create(array_map($callback,$this->elements));
 		}
 		public function pop(){
-			$lastKey = $this->getLastKey();
-			$obj = $this->elements[$lastKey];
-			unset($this->elements[$lastKey]);
-			$this->flushKeys();
-			return $obj;
+			return self::create(array_pop($this->elements));
 		}
 		public function push($elements,$_=null){
 			$this->elements = array_merge($this->elements,func_get_args());
@@ -82,12 +78,7 @@
 			return self::create(array_reverse($this->elements));
 		}
 		public function shift(){
-			$firstKey = $this->getFirstKey();
-			echo $this->elements[0];
-			$obj = $this->elements[$firstKey];
-			unset($this->elements[$firstKey]);
-			$this->flushKeys();
-			return $obj;
+			return self::create(array_shift($this->elements));
 		}
 		public function unshift($elements,$_=null){
 			$this->elements = array_merge(func_get_args(),$this->elements);
