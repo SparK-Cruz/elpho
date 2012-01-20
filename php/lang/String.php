@@ -160,6 +160,7 @@
 		 * @return int|bool
 		 */
 		public function lastIndexOf($char,$fromIndex=0){
+			if(is_object($char)) $char = $char->toString();
 			if(is_integer($char)) $char = chr($char);
 			return strrpos($this->value,$char,$fromIndex);
 		}
