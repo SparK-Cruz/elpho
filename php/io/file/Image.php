@@ -126,8 +126,8 @@
 			return $this->crop($x,$y,$width,$height);
 		}
 		private function calcularPosicao($stageWidth,$stageHeight,$width,$height,$position){
-			$coords[0] = ($stageWidth/2)-($width/2);
-			$coords[1] = ($stageHeight/2)-($height/2);
+			$coords[0] = ($stageWidth-$width)/2;
+			$coords[1] = ($stageHeight-$height)/2;
 			
 			if($position == "center") return $coords;
 			
