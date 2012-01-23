@@ -115,8 +115,8 @@
 			$value = null;
 			
 			foreach($this->_prototype as $proto){
-				if(isset($proto->{$property}))
-					$value = $proto->{$property};
+				if(isset($proto[$property]))
+					$value = $proto[$property];
 			}
 			if(isset($this->properties->{$property}))
 				$value = $this->properties->{$property};
