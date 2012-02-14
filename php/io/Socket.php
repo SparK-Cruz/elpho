@@ -1,4 +1,5 @@
 <?php
+	import(php.lang.String);
 	import(php.io.IoException);
 	
 	class Socket{
