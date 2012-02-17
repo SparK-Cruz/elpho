@@ -1,16 +1,15 @@
 <?php
 	abstract class Event{
 		private $target;
-		private $lockTarget = false;
 		
 		public function setTargetOnce($obj){
-			if($this->lockTarget) return;
+			if(!is_null($this->target)) return;
 			$this->target = $obj;
-			$this->lockTarget = true;
 		}
-		abstract public function getName();
 		public function getTarget(){
 			return $this->target;
 		}
+		
+		abstract static public function getName();
 	}
 ?>
