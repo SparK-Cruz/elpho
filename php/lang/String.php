@@ -1,5 +1,6 @@
 <?php
 	import(php.lang.ArrayList);
+	import(php.lang.Dynamic);
 	
 	/**
 	 * Classe String para PHP mapeada a partir da classe {@link http://download.oracle.com/javase/6/docs/api/java/lang/String.html String do JavaSE(tm)}
@@ -64,8 +65,8 @@
 			if($end < 0) $end = $this->length()-1+$end;
 			if(!$end) $end = $this->length()-1;
 			
-			$length = $end-$start;
-			return new String(substr($this->value,$start,$end));
+			$length = $end-$start+1;
+			return new String(substr($this->value,$start,$length));
 		}
 		
 		/**
@@ -302,7 +303,7 @@
 			$n = $this->length();
 			$hash = 0;
 			for($i=0;$i<$n;$i++){
-				$hash += ord($this->charAt($i))*31^($n-1);
+				$hash += ord($this->charAt($i))*31^($n-($i+1));
 			}
 			return $hash+ord($this->charAt($n-1));
 		}
@@ -313,6 +314,18 @@
 		 */
 		public function toString(){
 			return $this->value;
+		}
+		
+		/**
+		* Retorna um objeto a partir da String usando notação PHPON
+		* @return Object
+		*/
+		public function toObject(){
+			$work = new String($this);
+			$work = $work->replace("(","new Object(array(");
+			$work = $work->replace(")","))");
+			$obj = eval("return ".$work->toString().";");
+			return $obj;
 		}
 		
 		/**

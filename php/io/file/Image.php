@@ -158,7 +158,7 @@
 			$nova = imagecreatetruecolor($width,$height);
 			imagealphablending($nova, false);
 			imagesavealpha($nova, true);
-			$fundo = imagecolorallocatealpha($nova,0,0,0,127);
+			$fundo = imagecolorallocatealpha($nova,0,0,0,0);
 			imagefill($nova,0,0,$fundo);
 			
 			return $nova;

@@ -1,5 +1,6 @@
 <?php
 	import(php.lang.Dynamic);
+	import(php.lang.String);
 	import(php.lang.ArrayList);
 	import(php.event.EventHandler);
 	
@@ -142,6 +143,21 @@
 		}
 		public function __toString(){
 			return '[object '.get_class($this).']';
+		}
+		public function toJson(){
+			$final = new String();
+			$propertyList = new ArrayList();
+			
+			foreach($this->properties as $name => $value){
+				if(is_subclass_of($value,"Object")) $value = $value->toJson();
+				$propertyList->push($name.':"'.$value.'"');
+			}
+			
+			$final->concat("{");
+			$final->concat($propertyList->join(","));
+			$final->concat("}");
+			
+			return $final;
 		}
 	}
 ?>

@@ -10,6 +10,6 @@
 			return $this->target;
 		}
 		
-		abstract static public function getName();
+		abstract public function getName();
 	}
 ?>

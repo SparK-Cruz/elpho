@@ -33,7 +33,7 @@
 		}
 		
 		$name = $class."_".$constructor;
-		eval("class ".$name." extends ".$class."{ public function __construct(){ call_user_func_array(array(parent,_".$constructor."), func_get_args()); } }");
+		eval("class ".$name." extends ".$class."{ public function __construct(){ call_user_func_array(array('parent','_".$constructor."'), func_get_args()); } }");
 	}
 	
 	function checkOverload($type,$_=null){
@@ -56,4 +56,3 @@
 		}
 		return true;
 	}
-?>

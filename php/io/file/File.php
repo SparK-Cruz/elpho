@@ -27,6 +27,9 @@
 			$this->extensao = $ext;
 			$this->tipo = self::toMime($ext);
 		}
+		public function setRawContent($conteudo){
+			$this->conteudo = $conteudo;
+		}
 		public function setContent($conteudo){
 			$this->conteudo = new String($conteudo);
 		}
@@ -44,44 +47,39 @@
 		public function getFullName(){
 			return new String($this->nome);
 		}
-		
 		public function getName(){
 			return new String(basename($this->getFullName()));
 		}
-		
 		public function getExtension(){
 			return new String($this->extensao);
 		}
-		
+		public function getRawContent(){
+			$content = $this->conteudo;
+			if(is_object($content)) $content = $content->toString();
+			return $content;
+		}
 		public function getContent(){
 			return new String($this->conteudo);
 		}
-		
 		public function exists(){
 			return file_exists($this->nome);
 		}
-		
 		public function getSize(){
 			if(!is_object($this->conteudo)) $this->conteudo = new String($this->conteudo);
 			return $this->conteudo->length();
 		}
-		
 		public function getType(){
 			return new String($this->tipo);
 		}
-		
 		public function getInfo(){
 			return new ArrayList($this->getType(),$this->getSize());
 		}
-		
 		public function getBase64(){
 			return "data:".$this->getType().";base64,".base64_encode($this->getContent());
 		}
-		
 		public function getChecksum(){
 			return md5($this->getContent()->toString());
 		}
-		
 		public function copy(){
 			$class = get_class($this);
 			$copy = new $class;
@@ -89,19 +87,16 @@
 			$copy->setContent($this->getContent());
 			return $copy;
 		}
-		
 		//actions
-		protected function ler(){
-			$this->conteudo = file_get_contents($this->nome);
-		}
-		
 		public function erase(){
 			$this->setContent('');
 			if($this->exists()) $this->save();
 		}
-		
 		public function write($texto){
 			$this->conteudo .= $texto;
+		}
+		public function writeLine($texto){
+			$this->write($texto.PHP_EOL);
 		}
 		public function save($nome=null){
 			if($nome) $this->setName($nome);
@@ -110,13 +105,16 @@
 			fclose($arquivo);
 			chmod($this->nome,0755);
 		}
-		
 		public function delete(){
 			$this->erase();
 			if($this->exists()) unlink($this->nome);
 		}
 		
 		//extra
+		protected function ler(){
+			$this->conteudo = file_get_contents($this->nome);
+		}
+		
 		public static function toMime($ext){
 			$ext = strtolower($ext);
 			$tipo = "application";
@@ -127,6 +125,10 @@
 				case "gif":
 				case "bmp":
 					$tipo = "image";
+				break;
+				case "x-aiff":
+					$tipo = "audio";
+					$ext = "aiff";
 				break;
 				case "mp3":
 					$tipo = "audio";
@@ -192,6 +194,9 @@
 				break;
 				case "plain":
 					$ext = "txt";
+				break;
+				case "x-aiff":
+					$ext = "aiff";
 				break;
 				default:
 					$ext = $tipo;

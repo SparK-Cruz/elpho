@@ -18,7 +18,7 @@
 			$pathList = self::getIncludePath();
 			foreach($pathList as $current){
 				$current = str_replace("\\","/",$current)."/";
-				$path = $current.$root;
+				$path = str_replace("//","/",$current.$root);
 				$file = $path.'.php';
 				$base = basename($file);
 				
@@ -128,6 +128,7 @@
 			$name = basename($path,".php");
 			
 			if(class_exists($name)) return;
+			if(!file_exists($path)) return;
 			
 			self::registerInTree($name);
 			require_once($path);
@@ -179,7 +180,7 @@
 				$conteudo = str_replace(" ".$globalClass," \\".$globalClass,$conteudo);
 			}
 			
-			$arquivo = "T".date("His").$classe.round(microtime(false)*1000).".php";
+			$arquivo = "T".date("His").$classe.round(microtime(false)*1000)."_".rand(1000,9999).".php";
 			file_put_contents($arquivo,$conteudo);
 			try{
 				self::importFile($arquivo);
@@ -220,7 +221,7 @@
 			$uses = self::getCurrentUseList();
 			$newUses = array();
 			
-			$includePath = explode(PATH_SEPARATOR,str_replace(PATH_SEPARATOR.self::$ignoredEntries,'',get_include_path()));
+			$includePath = explode(PATH_SEPARATOR,str_replace(self::$ignoredEntries,'.'.PATH_SEPARATOR,get_include_path().PATH_SEPARATOR."./elpho/"));
 			
 			foreach($includePath as $caminho){
 				foreach($uses as $use){

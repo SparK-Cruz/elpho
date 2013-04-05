@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	final class Starter extends StaticType{
 		private static $entryMethod;
 		private static $exitMethod;
@@ -24,28 +24,28 @@
 		
 		private static function callEntry($args=array()){
 			if(!self::$entryMethod) return;
+			if(!method_exists(self::$entryMethod[0],self::$entryMethod[1])) return;
 			call_user_func(self::$entryMethod,$args);
 		}
 		
 		private static function callExit(){
 			if(!self::$exitMethod) return;
+			if(!method_exists(self::$exitMethod[0],self::$exitMethod[1])) return;
 			call_user_func(self::$exitMethod);
 		}
 		
 		private static function registerEntryClass($target){
-			$entry = array($target,"main");
-			$exit = array($target,"cleanUp");
-			
-			if(method_exists($entry[0],$entry[1]))
-				self::registerEntry($entry);
-			
-			if(method_exists($exit[0],$exit[1]))
-				self::registerExit($exit);
+			self::registerEntry(array($target,"main"));
+			self::registerExit(array($target,"cleanUp"));
+		}
+		
+		private static function fixShutdownScope(){
+			chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
 		}
 		
 		public static function callPrimaryMethods(){
 			try{
-				chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
+				self::fixShutdownScope();
 				self::callEntry($_REQUEST);
 				self::callExit();
 			}catch(Exception $e){

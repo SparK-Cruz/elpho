@@ -15,6 +15,7 @@
 			return true;
 		}
 		public function offsetGet($offset){
+			if(!isset($this->elements[$offset])) return;
 			return $this->elements[$offset];
 		}
 		public function offsetSet($offset,$value){
@@ -68,7 +69,7 @@
 			return self::create(array_map($callback,$this->elements));
 		}
 		public function pop(){
-			return self::create(array_pop($this->elements));
+			return array_pop($this->elements);
 		}
 		public function push($elements,$_=null){
 			$this->elements = array_merge($this->elements,func_get_args());
@@ -78,7 +79,7 @@
 			return self::create(array_reverse($this->elements));
 		}
 		public function shift(){
-			return self::create(array_shift($this->elements));
+			return array_shift($this->elements);
 		}
 		public function unshift($elements,$_=null){
 			$this->elements = array_merge(func_get_args(),$this->elements);
@@ -115,6 +116,9 @@
 		}
 		public function length(){
 			return count($this->elements);
+		}
+		public function isEmpty(){
+			return ($this->length() == 0);
 		}
 		
 		public function contains($value){
