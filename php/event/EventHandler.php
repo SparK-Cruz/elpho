@@ -17,10 +17,10 @@
 			}
 		}
 		protected function dispatchEvent($event){
-			$this->setup($event->getName());
+			$this->setup(get_class($event));
 			$event->setTargetOnce($this);
 			
-			foreach($this->listeners[$event->getName()] as $listener){
+			foreach($this->listeners[get_class($event)] as $listener){
 				$called = $listener[0];
 				if($listener[1] != "") $called = array($listener[0],$listener[1]);
 				call_user_func($called,$event);

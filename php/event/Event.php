@@ -9,7 +9,5 @@
 		public function getTarget(){
 			return $this->target;
 		}
-		
-		abstract public function getName();
 	}
 ?>
