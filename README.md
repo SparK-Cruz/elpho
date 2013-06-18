@@ -6,8 +6,7 @@ Extension Library for PHP OO
 Warning: This framework is meant for non-html serving php code.
 If you are familiar with Java, be welcome.
 
-	<?php
-		//HelloWorld.php
+	<?php //HelloWorld.php
 		require("../elpho/startup.php");
 		
 		import(php.lang.String);
