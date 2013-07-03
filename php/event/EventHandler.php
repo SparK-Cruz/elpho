@@ -3,6 +3,9 @@
 		private $listeners = array();
 		
 		public function addEventListener($eventName,$listener,$method=""){
+			if(class_exists($eventName,false))
+				$eventName = $eventName::getName();
+			
 			$this->setup($eventName);
 			
 			$this->listeners[$eventName][] = array($listener,$method);
