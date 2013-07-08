@@ -1,14 +1,14 @@
 <?php
 	import(php.lang.String);
-	
+
 	class ArrayList implements Serializable, ArrayAccess, IteratorAggregate{
 		protected $elements;
-		
+
 		//implementing IteratorAggregate
 		public function getIterator(){
 			return new ArrayIterator($this->elements);
 		}
-		
+
 		//implementing ArrayAccess
 		public function offsetExists($offset){
 			if(!is_numeric($offset) or !isset($this->elements[$offset])) return false;
@@ -26,7 +26,7 @@
 		public function offsetUnset($offset){
 			unset($this->elements[$offset]);
 		}
-		
+
 		public function ArrayList($elements=null,$_=null){
 			$this->elements = array();
 			if($elements === null) return;
@@ -35,18 +35,18 @@
 		public function _from($array){
 			$this->elements = $array;
 		}
-		
+
 		public function merge($array){
 			if(is_object($array)) $array = $array->toPrimitive();
 			return ArrayList::create(array_merge($this->elements,$array));
 		}
-		
+
 		public static function create($array){
 			if(is_a($array,ArrayList)) $array = $array->toPrimitive();
-			
+
 			return new ArrayList_from($array);
 		}
-		
+
 		public function indexOf($element,$offset=0){
 			foreach($this->elements as $key => $target){
 				if($key < $offset or $element != $target) continue;
@@ -93,12 +93,12 @@
 			$inserted = array();
 			$new = array();
 			$return = array();
-			
+
 			if($length === null) $length = $this->length()-$start;
 			if($values !== null) $inserted = array_slice(func_get_args(),2);
-			
+
 			$return = array_slice($this->elements,$start,$length);
-			
+
 			foreach($this->elements as $key => $element){
 				if($key >= $start) continue;
 				$new[] = $element;
@@ -108,10 +108,10 @@
 				if($key < $start+$length) continue;
 				$new[] = $element;
 			}
-			
+
 			$this->elements = $new;
 			$this->flushKeys();
-			
+
 			return self::create($return);
 		}
 		public function length(){
@@ -120,15 +120,15 @@
 		public function isEmpty(){
 			return ($this->length() == 0);
 		}
-		
+
 		public function contains($value){
 			return in_array($value,$this->elements);
 		}
-		
+
 		public function unique(){
 			return self::create(array_unique($this->elements));
 		}
-		
+
 		public function set($index,$value){
 			if(!is_numeric($index)) return;
 			$this->elements[$index] = $value;
@@ -136,7 +136,7 @@
 		public function get($index){
 			return $this->relements[$index];
 		}
-		
+
 		private function getLastKey(){
 			$lastKey = false;
 			$keys = array_reverse(array_keys($this->elements));
@@ -156,25 +156,24 @@
 			}
 			$this->elements = $new;
 		}
-		
+
 		public function toPrimitive(){
 			return $this->elements;
 		}
 		public function toString(){
 			return $this->join(',')->toString();
 		}
-		
+
 		public function serialize(){
 			return serialize($this->elements);
 		}
 		public function unserialize($data){
 			$this->elements = unserialize($data);
 		}
-		
+
 		public function __toString(){
 			return $this->toString();
 		}
 	}
-	
+
 	named('from');
-?>

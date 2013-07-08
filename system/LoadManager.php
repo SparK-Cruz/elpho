@@ -1,21 +1,21 @@
 <?php
-	
+
 	final class LoadManager extends StaticType{
 		private static $ELPHO_PATH = "";
 		private static $ignoredEntries = "?";
 		private static $allowLoad = true;
-		
+
 		private static function addIncludePath($path){
 			$entries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
 			set_include_path(".".PATH_SEPARATOR.$path.PATH_SEPARATOR.$entries);
 		}
 		public static function loadElphoPath($path,$ignored="?"){
 			if(!self::$allowLoad) return;
-			
+
 			if(!self::$ELPHO_PATH){
 				self::$ELPHO_PATH = $path;
 			}
-			
+
 			self::ignorePaths($ignored);
 			self::addIncludePath($path);
 			self::mapPackages();
@@ -27,18 +27,18 @@
 			$file = $path."/startup.php";
 			if(file_exists($file)) include($file);
 		}
-		
+
 		public static function import($id=false){
 			require_once("system/load/ClassNotFoundException.php");
 			require_once("system/load/PackageNotFoundException.php");
-			
+
 			try{
 				$path = self::locateClass($id);
 				if(!$path)
 					throw new ClassNotFoundException($id);
-				
+
 				self::importFile($path);
-				
+
 			}catch(ClassNotFoundException $e){
 				try{
 					self::importPackage($id);
@@ -47,32 +47,32 @@
 				}
 			}
 		}
-		
+
 		private static function locateClass($classId=false){
 			//Basic parameter check
 			if(!$classId) return;
 
 			//Uppercase check
 			if(!preg_match('/^[A-Z]/',basename($classId))) return;
-			
+
 			$filename = $classId.".php";
-			
+
 			$includePath = self::getIncludePath();
 			foreach($includePath as $root){
 				if(!is_file(realpath($root."/".$filename))) continue;
 				return $filename; //Found it!
 			}
 		}
-		
+
 		private static function importPackage($packageId){
 			require_once("system/load/PackageNotFoundException.php");
-			
+
 			self::registerFolder($packageId);
 			$root = realpath($packageId);
-			
+
 			if(!is_dir($root))
 				throw new PackageNotFoundException();
-			
+
 			foreach(self::listFolder($root) as $part)
 				self::import($packageId.basename($part,".php"));
 		}
@@ -83,7 +83,7 @@
 			self::registerInTree($className);
 			require_once($path);
 		}
-		
+
 		public static function ignorePaths($ignoredEntries="?"){
 			if($ignoredEntries == "?") return;
 			self::$ignoredEntries = $ignoredEntries;
@@ -181,9 +181,9 @@
 
 			foreach($includePath as $current){
 				$current = str_replace("\\","/",$current)."/";
-				
+
 				$nome = $classe.".php";
-				
+
 				if(!file_exists($current.$nome)) continue;
 				self::importNamespacedFile($current.$nome,dirname($nome));
 				return;
@@ -272,4 +272,3 @@
 			return $includePath;
 		}
 	}
-?>

@@ -23,4 +23,3 @@
 		public function getEmbedCode($width=586,$height=360);
 		public function getPlayer();
 	}
-?>

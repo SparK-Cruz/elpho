@@ -336,4 +336,3 @@
 			return $this->toString();
 		}
 	}
-?>

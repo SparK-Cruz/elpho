@@ -1,7 +1,7 @@
 <?php
 	class Request{
 		private $link;
-		
+
 		public function Request($url=null,$options=array()){
 			if(!function_exists("curl_init")) throw new Exception("Client URL Module not found in current environment.");
 			$this->link = $this->checkSuccess(curl_init($url));
@@ -31,19 +31,18 @@
 		public function __destruct(){
 			$this->close();
 		}
-		
+
 		public static function create($handle){
 			$new = new Request();
 			$new->setHandle($handle);
 			return $new;
 		}
-		
+
 		private function checkSuccess($value){
 			if($value !== false and $value !== null) return $value;
-			
+
 			$message = "Invalid Client URL handler, check your PHP setup and the libcurl extension.";
 			if($this->link) $message = curl_error($this->link);
 			throw new IoException($message);
 		}
 	}
-?>

@@ -4,4 +4,3 @@
 			throw new Exception("Static classes cannot be instantiated.");
 		}
 	}
-?>

@@ -2,7 +2,7 @@
 	import(php.io.video.Embedable);
 	import(php.io.file.Image);
 	import(php.io.IoException);
-	
+
 	class YouTubeVideo implements Embedable{
 		private $id;
 		private $title;
@@ -13,25 +13,25 @@
 		private $favorite;
 		private $publishDate;
 		private $publishTime;
-		
+
 		private $isLoaded;
-		
+
 		const IMAGE_URL = 'http://img.youtube.com/vi/%s/%s.jpg';
-		
+
 		//constructor
 		public function YouTubeVideo($id=""){
 			if($id == "") return;
-			
+
 			$this->isLoaded = false;
-			
+
 			if(strpos($id,"v=") !== false){
 				$this->setUrl($id);
 				return;
 			}
-			
+
 			$this->setId($id);
 		}
-		
+
 		//set
 		public function setId($id){
 			$this->id = $id;
@@ -42,10 +42,10 @@
 			if($end === false) $end = strlen($url);
 			$end -= $anchor;
 			$id = substr($url,$anchor,$end);
-			
+
 			$this->setId($id);
 		}
-		
+
 		//get
 		public function getId(){
 			return $this->id;
@@ -80,11 +80,11 @@
 			$seconds = floor($time % 60);
 			$minutes = floor(($time/60) % 60);
 			$hours = floor($time/60/60);
-			
+
 			$seconds = $seconds < 10 ? "0".$seconds : $seconds;
 			$minutes = $minutes < 10 ? "0".$minutes : $minutes;
 			$hours = $hours < 10 ? "0".$hours : $hours;
-			
+
 			return $hours.":".$minutes.":".$seconds;
 		}
 		public function getFavorite(){
@@ -131,7 +131,7 @@
 		public function getPlayer(){
 			return 'http://www.youtube.com/v/'.$this->id;
 		}
-		
+
 		//extra
 		/**
 		 * Only used on API dependent methods
@@ -141,13 +141,13 @@
 			$this->grabInfo();
 			$this->isLoaded = true;
 		}
-		
+
 		private function grabInfo(){
 			$handler = new DOMDocument();
 			$result = @$handler->load($this->getApi());
-			
+
 			if(!$result) throw new IoException("Can't connect to API.");
-			
+
 			$this->title = $handler->getElementsByTagName("title")->item(0)->nodeValue;
 			$this->author = $handler->getElementsByTagName("author")->item(0)->getElementsByTagName("name")->item(0)->nodeValue;
 			$this->description = $handler->getElementsByTagName("content")->item(0)->nodeValue;
@@ -160,4 +160,3 @@
 			$this->publishTime = substr($publishTimestamp,strpos($publishTimestamp,"T")+1,8);
 		}
 	}
-?>

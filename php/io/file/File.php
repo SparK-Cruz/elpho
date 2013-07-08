@@ -1,24 +1,24 @@
 <?php
 	import(php.lang.String);
-	
+
 	class File{
 		protected $nome;
 		protected $conteudo;
 		protected $tipo;
 		protected $extensao;
-		
+
 		//constructor
 		public function File($nome=""){
 			if($nome != "") $this->setName($nome);
-			
+
 			if($this->exists()) $this->ler();
 		}
-		
+
 		//set
 		public function setName($nome){
 			$nome = str_replace("\\","/",$nome);
 			$this->nome = $nome;
-			
+
 			$ext = substr($nome,strrpos($nome,".")+1);
 			$this->extensao = $ext;
 			$this->tipo = self::toMime($ext);
@@ -42,7 +42,7 @@
 			$this->setType(str_replace("data:","",$data[0]));
 			$this->setContent(base64_decode(str_replace("base64,","",$data[1])));
 		}
-		
+
 		//get
 		public function getFullName(){
 			return new String($this->nome);
@@ -109,12 +109,12 @@
 			$this->erase();
 			if($this->exists()) unlink($this->nome);
 		}
-		
+
 		//extra
 		protected function ler(){
 			$this->conteudo = file_get_contents($this->nome);
 		}
-		
+
 		public static function toMime($ext){
 			$ext = strtolower($ext);
 			$tipo = "application";
@@ -164,10 +164,10 @@
 					$tipo = "text";
 				break;
 			}
-			
+
 			return $tipo."/".$ext;
 		}
-		
+
 		public static function toExtension($tipo){
 			$tipo = strtolower($tipo);
 			$tipo = explode("/",$tipo);
@@ -205,4 +205,4 @@
 			return $ext;
 		}
 	}
-?>
+

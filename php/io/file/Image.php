@@ -1,10 +1,10 @@
 <?php
 	import(php.io.file.File);
-	
+
 	class Image extends File{
 		protected $width;
 		protected $height;
-		
+
 		//constructor
 		public function Image($nome=""){
 			parent::File($nome);
@@ -15,7 +15,7 @@
 				$this->setType($tamanho["mime"]);
 			}
 		}
-		
+
 		//set
 		public function setExtension($ext){
 			$oldType = $this->tipo;
@@ -33,7 +33,7 @@
 		}
 		public function setResource($res){
 			$conteudo = "";
-			
+
 			ob_start();
 			switch($this->extensao){
 				case "jpg":
@@ -51,13 +51,13 @@
 			}
 			$conteudo = ob_get_contents();
 			ob_end_clean();
-			
+
 			$this->width = imagesx($res);
 			$this->height = imagesy($res);
-			
+
 			$this->conteudo = new String($conteudo);
 		}
-		
+
 		//get
 		public function getWidth(){
 			return $this->width;
@@ -74,30 +74,30 @@
 			if(is_object($this->conteudo)) $conteudo = $this->conteudo->toString();
 			return imagecreatefromstring($conteudo);
 		}
-		
+
 		//actions
 		public function applyWatermark($marca,$transparencia,$position="center"){
 			$image = $this->criarImagem($this->width,$this->height);
-			
+
 			$markResource = $marca->getResource();
 			$local = $this->getResource();
-			
+
 			$nova = $this->criarImagem($this->width,$this->height);
 			$background = imagecolorat($markResource,0,0);
 			imagefill($nova,0,0,$background);
 			imagecolortransparent($nova,$background);
-			
+
 			$size = array($this->width,$this->height);
 			$markSize = array($marca->getWidth(),$marca->getHeight());
-			
+
 			list($x,$y) = $this->calcularPosicao($size[0],$size[1],$markSize[0],$markSize[1],$position);
-			
+
 			imagecopyresampled($image,$local,0,0,0,0,$size[0],$size[1],$size[0],$size[1]);
 			imagecopyresampled($nova,$local,0,0,0,0,$size[0],$size[1],$size[0],$size[1]);
 			imagecopyresampled($nova,$markResource,$x,$y,0,0,$markSize[0],$markSize[1],$markSize[0],$markSize[1]);
-			
+
 			imagecopymerge($image,$nova,0,0,0,0,$size[0],$size[1],$transparencia);
-			
+
 			$retorno = $this->copy();
 			$retorno->setResource($image);
 			return $retorno;
@@ -107,12 +107,12 @@
 			if($height == 0) $height = $this->height;
 			$nova = $this->criarImagem($width,$height);
 			$arquivo = $this->getResource();
-			
+
 			imagecopyresampled($nova,$arquivo,0,0,0,0,$width,$height,$this->width,$this->height);
-			
+
 			$this->width = $width;
 			$this->height = $height;
-			
+
 			$retorno = $this->copy();
 			$retorno->setResource($nova);
 			return $retorno;
@@ -120,22 +120,22 @@
 		public function resizeCanvas($width=0,$height=0,$position="center"){
 			if($width == 0) $width = $this->width;
 			if($height == 0) $height = $this->height;
-			
+
 			list($x,$y) = $this->calcularPosicao($this->width,$this->height,$width,$height,$position);
-			
+
 			return $this->crop($x,$y,$width,$height);
 		}
 		private function calcularPosicao($stageWidth,$stageHeight,$width,$height,$position){
 			$coords[0] = ($stageWidth-$width)/2;
 			$coords[1] = ($stageHeight-$height)/2;
-			
+
 			if($position == "center") return $coords;
-			
+
 			if($position == "top" or $position == "bottom") $position .= "-center";
 			if($position == "left" or $position == "right") $position = "center-".$position;
-			
+
 			$position = explode("-",$position,2);
-			
+
 			if($position[0] == "top") $coords[1] = 0;
 			if($position[1] == "left") $coords[0] = 0;
 			if($position[0] == "bottom") $coords[1] = $stageHeight-$height;
@@ -147,9 +147,9 @@
 			if($height == 0) $height = $this->height;
 			$nova = $this->criarImagem($width,$height);
 			$arquivo = $this->getResource();
-			
+
 			imagecopyresampled($nova,$arquivo,0,0,$x,$y,$this->width,$this->height,$this->width,$this->height);
-			
+
 			$retorno = $this->copy();
 			$retorno->setResource($nova);
 			return $retorno;
@@ -160,7 +160,7 @@
 			imagesavealpha($nova, true);
 			$fundo = imagecolorallocatealpha($nova,0,0,0,0);
 			imagefill($nova,0,0,$fundo);
-			
+
 			return $nova;
 		}
 		private function atualizarTipo($oldType){
@@ -170,4 +170,4 @@
 			$this->setResource($res);
 		}
 	}
-?>
+

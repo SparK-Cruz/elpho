@@ -1,21 +1,21 @@
 <?php
 	import(php.lang.String);
 	import(php.io.IoException);
-	
+
 	class Socket{
 		private $handle;
-		
+
 		public function Socket($domain=AF_INET,$type=SOCK_STREAM,$protocol=SOL_TCP){
 			$this->handle = $this->checkIO(socket_create($domain,$type,$protocol));
 		}
-		
+
 		public function open($ip,$port=80){
 			$this->checkIO(socket_connect($this->handle,$ip,$port));
 		}
 		public function close(){
 			$this->checkIO(socket_close($this->handle));
 		}
-		
+
 		public function setOption($level,$option,$value){
 			socket_set_option($this->handle, $level, $option, $value);
 		}
@@ -29,7 +29,7 @@
 				$char = $this->read(1);
 				if(in_array($char->toString(),$delimiters) and $result->toString()) break;
 				$result = $result->concat($char);
-				
+
 				foreach($delimiters as $delimiter){
 					$leave = false;
 					if($result->endsWith($delimiter)) $leave = true;
@@ -42,7 +42,7 @@
 		public function readLine(){
 			return $this->readTo("\r\n","\n","\r");
 		}
-		
+
 		public function send($string,$flags=0){
 			$length = strlen($string);
 			$this->checkIO(socket_send($this->handle,$string,$length,$flags));
@@ -57,12 +57,12 @@
 		public function flush(){
 			$this->write(PHP_EOL);
 		}
-		
+
 		public function tell($string){
 			$this->writeLine($string);
 			return $this->readLine();
 		}
-		
+
 		private function checkIO($value){
 			$last = 0;
 			$message = "Unknown IO error.";
@@ -75,4 +75,3 @@
 			return $value;
 		}
 	}
-?>

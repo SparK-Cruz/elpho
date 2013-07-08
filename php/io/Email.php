@@ -7,12 +7,12 @@
 	import(php.lang.ArrayList);
 	import(php.io.IoException);
 	import(php.io.file.File);
-	
+
 	class Email{
 		private $charset;
 		private $boundary;
 		private $boundaryClose;
-		
+
 		private $origem;
 		private $nomeOrigem;
 		private $destino;
@@ -21,7 +21,7 @@
 		private $destinosPorEmail;
 		private $headers;
 		private $anexos;
-		
+
 		//constructor
 		public function Email(){
 			$headers = "MIME-Version: 1.0".PHP_EOL;
@@ -30,7 +30,7 @@
 			$headers .= 'Reply-To: {origem}'.PHP_EOL;
 			$headers .= '{extra}'.PHP_EOL;
 			$this->headers = $headers;
-			
+
 			$this->charset = "utf-8";
 			$this->boundary = "bound".md5(base64_encode(date("YYmYmdYmdHYmdHiYmdHis")))."bound"; //something random so nobody types it
 			$this->destinosPorEmail = 15;
@@ -39,7 +39,7 @@
 			$this->mensagem = "undefined";
 			$this->origem = "webmaster@".str_replace("www.","",isset($_SERVER["HTTP_HOST"])?:$_SERVER["SERVER_NAME"]);
 		}
-		
+
 		//set
 		public function setOrigin($origin){
 			$this->origem = $origin;
@@ -68,7 +68,7 @@
 		public function setCharset($charset){
 			$this->charset = $charset;
 		}
-		
+
 		//get
 		public function getOrigin(){
 			return $this->origem;
@@ -91,11 +91,11 @@
 		public function getCharset(){
 			return $this->charset;
 		}
-		
+
 		public function hasAttachments(){
 			return ($this->anexos->length() > 0);
 		}
-		
+
 		//actions
 		public function addAttachment($file){
 			if(is_string($file)) $file = new File($file);
@@ -114,23 +114,23 @@
 				}
 				$index = $i;
 			}
-			
+
 			if(isset($this->anexos[$index])) $this->anexos->splice($index,1);
 		}
-		
+
 		public function send(){
 			$mensagem = $this->gerarResultado();
-			
+
 			$para = new ArrayList();
 			$pagina = 0;
 			$destino = new String($this->destino);
 			$destino = $destino->split(',');
-			
+
 			for($i = 0; $i<$destino->length(); $i++){
 				$para->push(trim($destino[$i]));
-				
+
 				if(!$this->checkEstourouLimite($i,$destino->length(),$pagina)) continue;
-				
+
 				$assunto = self::fixAcentoAssunto($this->assunto);
 				$sucesso = @mail($para->join(',')->toString(),$assunto,$mensagem,$this->headers);
 				if(!$sucesso) throw new IoException("Unexpected error from E-mail server.");
@@ -138,7 +138,7 @@
 				$pagina++;
 			}
 		}
-		
+
 		//extra
 		private function gerarAnexos(){
 			$anexos = new ArrayList();
@@ -151,10 +151,10 @@
 				$html[] = 'Content-ID: <'.$anexo->getName().'@1000>';
 				$html[] = 'Content-transfer-encoding:base64'.PHP_EOL;
 				$html[] = self::gerarBaseAnexo($anexo);
-				
+
 				$anexos->push(implode(PHP_EOL,$html).PHP_EOL);
 			}
-			
+
 			return $anexos;
 		}
 		private static function fixAcentoAssunto($assunto){
@@ -172,19 +172,19 @@
 		}
 		private function gerarResultado(){
 			$this->gerarHeader();
-			
+
 			$body = "";
 			$body .= "--".$this->boundary.PHP_EOL;
 			$body .= 'Content-Transfer-Encoding: 8bit'.PHP_EOL;
 			$body .= 'Content-Type: text/html; charset="utf-8"'.PHP_EOL.PHP_EOL;
 			$body .= $this->mensagem.PHP_EOL;
-			
+
 			if($this->hasAttachments()){
 				$body .= "--".$this->boundary.PHP_EOL;
 				$body .= implode("--".$this->boundary.PHP_EOL,$this->gerarAnexos());
 			}
 			$body .= "--".$this->boundary."--".PHP_EOL;
-			
+
 			return $body;
 		}
 		private function assignHeader($tag,$valor){
@@ -196,4 +196,4 @@
 			return false;
 		}
 	}
-?>
+
