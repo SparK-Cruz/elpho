@@ -161,7 +161,7 @@
 			return mb_encode_mimeheader($assunto,"UTF-8","B",PHP_EOL);
 		}
 		private static function gerarBaseAnexo($arquivo){
-			return chunk_split(base64_encode($arquivo->getConteudo()));
+			return chunk_split(base64_encode($arquivo->getContent()));
 		}
 		private function gerarHeader(){
 			$this->assignHeader('origem',$this->origem);
