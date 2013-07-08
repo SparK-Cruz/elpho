@@ -57,8 +57,8 @@
 			$prototypeList = $prototype;
 			if(!is_a($prototype,ArrayList)){
 				$prototypeList = ArrayList::create(func_get_args());
-				if($prototypeList->length() > 1) $prototypeList->shift();
-				if(!isset($prototypeList[0])) $prototypeList->push(new Dynamic());
+				$prototypeList->shift();
+				if($prototypeList->isEmpty()) $prototypeList->push(new Dynamic());
 			}
 			
 			$this->_prototype = $prototypeList;
@@ -160,4 +160,3 @@
 			return $final;
 		}
 	}
-?>

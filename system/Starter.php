@@ -2,16 +2,16 @@
 	final class Starter extends StaticType{
 		private static $entryMethod;
 		private static $exitMethod;
+		private static $started = false;
 		
-		public static function start(){
-			$path = dirname(__FILE__);
-			$defaultEntries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
-			LoadManager::ignorePaths($defaultEntries);
-			
-			LoadManager::loadModule($path,false);
+		public static function start($path){
+			if (self::$started) throw new Exception("Starter can only be run once!");
+			$ignored = str_replace(".".PATH_SEPARATOR,'',get_include_path());
+			LoadManager::loadElphoPath($path,$ignored);
 			self::registerMain();
 			
 			register_shutdown_function(array(Starter,"callPrimaryMethods"));
+			self::$started = true;
 		}
 		
 		private static function registerEntry($method){

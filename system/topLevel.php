@@ -6,7 +6,7 @@
 		LoadManager::import($root);
 	}
 	function usePack($root){
-		LoadManager::registerInUse($root);
+		LoadManager::registerFolder($root);
 	}
 	function loadModule($path){
 		LoadManager::loadModule($path);
