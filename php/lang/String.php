@@ -241,7 +241,7 @@
 		 * @return bool
 		 */
 		public function startsWith($sequence){
-			return (substr($this->value,strlen($sequence)) == $sequence);
+			return (substr($this->value, 0, strlen($sequence)) == $sequence);
 		}
 		/**
 		 * Retorna verdadeiro se o final da String for igual ao valor da sequencia
@@ -290,7 +290,7 @@
 		 */
 		public static function format($formatString,$args=false){
 			$args = func_get_args();
-			return new String(call_user_func_array(sprintf,$args));
+			return new String(call_user_func_array("sprintf",$args));
 		}
 
 		/**

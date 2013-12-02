@@ -32,8 +32,9 @@
 			if($elements === null) return;
 			$this->elements = func_get_args();
 		}
-		public function _from($array){
+		protected function _from($array){
 			$this->elements = $array;
+			$this->flushKeys();
 		}
 
 		public function merge($array){
@@ -124,6 +125,23 @@
 		public function contains($value){
 			return in_array($value,$this->elements);
 		}
+		public function filter($callback=null){
+			$default = function($element){
+				if(is_a($element,String))
+					return !$element->isEmpty();
+				return !!$element;
+			};
+			
+			if($callback === null)
+				$callback = $default;
+			
+			$filtered = array_filter(
+				$this->elements,
+				$callback
+			);
+
+			return self::create($filtered);
+		}
 
 		public function unique(){
 			return self::create(array_unique($this->elements));
@@ -150,11 +168,7 @@
 			return $firstKey;
 		}
 		private function flushKeys(){
-			$new = array();
-			foreach($this->elements as $value){
-				$new[] = $value;
-			}
-			$this->elements = $new;
+			$this->elements = array_values($this->elements);
 		}
 
 		public function toPrimitive(){
