@@ -32,20 +32,18 @@
 			require_once("system/load/ClassNotFoundException.php");
 			require_once("system/load/PackageNotFoundException.php");
 
-			try{
-				$path = self::locateClass($id);
-				if(!$path)
-					throw new ClassNotFoundException($id);
+			$isPackage = !preg_match('/^[A-Z]/',basename($id));
 
-				self::importFile($path);
-
-			}catch(ClassNotFoundException $e){
-				try{
-					self::importPackage($id);
-				}catch(PackageNotFoundException $e){
-					echo "WARNING";
-				}
+			if($isPackage){
+				self::importPackage($id);
+				return;
 			}
+			
+			$path = self::locateClass($id);
+			if(!$path)
+				throw new ClassNotFoundException($id);
+
+			self::importFile($path);
 		}
 
 		private static function locateClass($classId=false){
@@ -68,10 +66,19 @@
 			require_once("system/load/PackageNotFoundException.php");
 
 			self::registerFolder($packageId);
-			$root = realpath($packageId);
-
-			if(!is_dir($root))
-				throw new PackageNotFoundException();
+			$root = null;
+			
+			foreach(self::getIncludePath() as $base){
+				$path = $base."/".$packageId;
+				if(!file_exists($path))
+					continue;
+				
+				$root = $path;
+				break;
+			}
+			
+			if($root == null)
+				throw new PackageNotFoundException($packageId);
 
 			foreach(self::listFolder($root) as $part)
 				self::import($packageId.basename($part,".php"));
