@@ -105,13 +105,13 @@
 			return $this->getImageL();
 		}
 		public function getImageL(){
-			return new Imagem($this->getLinkImageL());
+			return new Image($this->getLinkImageL());
 		}
 		public function getImageM(){
-			return new Imagem($this->getLinkImageM());
+			return new Image($this->getLinkImageM());
 		}
 		public function getImageS(){
-			return new Imagem($this->getLinkImageS());
+			return new Image($this->getLinkImageS());
 		}
 		public function getLinkImage(){
 			return String::format(self::IMAGE_URL,$this->id,"default");
