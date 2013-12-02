@@ -72,13 +72,13 @@ Just pass the main class file name and it will do the dirty work for you.
 7. `alias(newName , oldName)`
    Creates alias for classes.
 
-8. `named(contructorMethod [, className])`
+8. `named(constructorMethod [, className])`
    Creates named constructors off of methods.
    The method must begin with a single underscore (`_method`), after the class declaration just call `named("method");`.
    Now you may use your named constructor: `new Class_method()`.
 
 9. `checkOverload(type...)`
-   This returns true of the list of arguments in the current method matches the types passed to it. Use with caution.
+   This returns true if the list of arguments in the current method matches the types passed to it. Use with caution.
 
 ## WORK IN PROGRESS
 Yes, it is...
