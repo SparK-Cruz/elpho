@@ -12,3 +12,4 @@
 	require_once("system/topLevel.php");
 
 	Starter::start(dirname(__FILE__));
+	import(php.lang);
