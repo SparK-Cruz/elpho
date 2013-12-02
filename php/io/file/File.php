@@ -88,9 +88,12 @@
 			return $copy;
 		}
 		//actions
-		public function erase(){
+		public function clear(){
 			$this->setContent('');
 			if($this->exists()) $this->save();
+		}
+		public function refresh(){
+			if($this->exists()) $this->ler();
 		}
 		public function write($texto){
 			$this->conteudo .= $texto;
@@ -106,7 +109,7 @@
 			chmod($this->nome,0755);
 		}
 		public function delete(){
-			$this->erase();
+			$this->clear();
 			if($this->exists()) unlink($this->nome);
 		}
 
