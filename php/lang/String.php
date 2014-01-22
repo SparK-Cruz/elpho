@@ -89,7 +89,7 @@
 		 */
 		public function split($delimiter,$limit=false){
 			if(!$delimiter) return array(new String($this->value));
-			$limit = $limit ? $limit : strlen($this->value);
+			$limit = $limit ? $limit : strlen($this->value) + 1;
 			$primitive = explode($delimiter,$this->value,$limit);
 			$list = array();
 			foreach($primitive as $str){
