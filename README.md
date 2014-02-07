@@ -6,13 +6,13 @@ Extension Library for PHP OO
 ### WARNING
 This framework is meant for non-html serving php code.
 It's structure is dedicated to solve the leaked scope and procedural ancestry of PHP.
-This is not a MVC framework, this is only a "C" framework (micro-framework) as it's meant for backend APIs and Services.
+This is not a MVC framework, it's a language extension and even tough we try to fix some stuff, it's still PHP.
 
 ### Packaging
-As this framework follows the Java way of doing things, we don't use the namespace solution.
-Instead we use the good old import, but this time as a function.
-The framework maps the folders and classes to defined strings, so you don't have to worry about quotes and slashes.
-Just notice the only way you tell a class belongs to a certain package is the folder structure, there's no package declaration.
+This framework implements packages instead of namespaces.<br/>
+The packaging system uses commands like `import` and `usePack` as well as seamless dynamic namespacing to solve class name clashes.<br/>
+The framework maps the folders and files to *defined strings* for the `import` command, don't use quotes and slashes on it.<br/>
+Just notice the only way you tell a class belongs to a certain package is the folder structure, there's no package declaration like in Java.
 
 Here is the HelloWorld.php sample:
 
@@ -28,14 +28,13 @@ Here is the HelloWorld.php sample:
 			}
 		}
 	?>
-First line is only necessary in the file that is exposed to the web.
-It's your main class, your entry point, your index or however you call it.
-The third line is calling the topLevel function `import`, passing a `classId` string to it (resolves into `"php/lang/String"`).
-The sixth line is declaring the entry method. After all the definitions are read, the framework automatically calls the main method.
+First line is only necessary in the requested file and once per request. All files exposed to the web should contain it.
+The third line is calling the topLevel function `import`, passing a `classId` string to it (notice the lack of slashes and quotes).
+The sixth line is declaring the entry method. After all the definitions are read, the framework automatically calls the main method of the entry class.
 
 ### System
-The system folder contains all the files that make the framework work.
-What's new in userland is declared in the file `system/topLevel.php`:
+The system folder contains all the framework core files.
+Userland functions are declared in the file `system/topLevel.php`:
 
 1. `registerMain(file)`
    This method is used when you need to tell elpho that your exposed file is not the main class.
@@ -81,4 +80,7 @@ Just pass the main class file name and it will do the dirty work for you.
    This returns true if the list of arguments in the current method matches the types passed to it. Use with caution.
 
 ## WORK IN PROGRESS
-Yes, it is...
+This framework is a work in progress...
+Remember that doesn't matter how good a framework looks... it's still PHP.
+
+Mail me at roger.cruz(at)ateliware.com.br if you want information about Elpho or the MVC module for it
