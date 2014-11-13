@@ -4,9 +4,10 @@ elpho
 Extension Library for PHP OO
 
 ### WARNING
-This framework is meant for non-html serving php code.
+The core framework is meant for non-html serving php code.
 It's structure is dedicated to solve the leaked scope and procedural ancestry of PHP.
-This is not a MVC framework, it's a language extension and even tough we try to fix some stuff, it's still PHP.
+This is not a MVC framework, but it has an built-in MVC module you can use.
+The core is a language extension and even tough we try to fix some stuff, it's still PHP.
 
 ### Packaging
 This framework implements packages instead of namespaces.<br/>
@@ -80,7 +81,7 @@ Just pass the main class file name and it will do the dirty work for you.
    This returns true if the list of arguments in the current method matches the types passed to it. Use with caution.
 
 ## WORK IN PROGRESS
-This framework is a work in progress...
-Remember that doesn't matter how good a framework looks... it's still PHP.
+This framework is a work in progress and always will be.
+Remember, doesn't matter how good a framework looks and feels, it's still PHP.
 
-Mail me at roger.cruz(at)ateliware.com.br if you want information about Elpho or the MVC module for it
+Mail me at roger.cruz(at)ateliware.com.br if you want more information.
