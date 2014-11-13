@@ -1,2 +1,2 @@
 <?php
-	class IoException extends Exception{}
+  class IoException extends Exception{}
