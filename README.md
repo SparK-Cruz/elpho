@@ -60,7 +60,7 @@ Just pass the main class file name and it will do the dirty work for you.
 			$b = new b\MyClass(); //Sounds great but be warned: it uses eval().
 		?>
 
-4. `loadModule(path)`
+4. `loadExtension(path)`
    This function loads plugins and modules for the framework, as well as adds their path to the includePath and importPath, it also runs their `startup.php` if any.
 
 5. `call(function [, argument...])`
