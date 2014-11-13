@@ -5,7 +5,7 @@
   import(php.event.EventHandler);
   import(database.event);
 
-  abstract class Beam extends EventHandler{
+  abstract class Entity extends EventHandler{
     private $tabela;
     private $indice;
     private $chave;
@@ -25,7 +25,7 @@
     protected $separator = "`";
 
     //constructor
-    protected function Beam(PDO $connection,$fieldList=array()){
+    protected function Entity(PDO $connection,$fieldList=array()){
       $this->setWritable(false);
       if(!$this->chave) $this->chave = "id";
 
