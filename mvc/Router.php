@@ -98,9 +98,8 @@
 
     public function getRequest(){
       $requestUri = new String($_SERVER["REQUEST_URI"]);
-      $requestUri = $requestUri->toLowerCase();
 
-      if ($requestUri->startsWith(self::$root))
+      if ($requestUri->toLowerCase()->startsWith(self::$root))
         $requestUri = $requestUri->substr(strlen(self::$root));
 
       $request = $requestUri->split("/")->filter();
