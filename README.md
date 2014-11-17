@@ -1,3 +1,5 @@
+![alt text][logo]
+
 elpho
 =====
 
@@ -85,3 +87,5 @@ This framework is a work in progress and always will be.
 Remember, doesn't matter how good a framework looks and feels, it's still PHP.
 
 Mail me at roger.cruz(at)ateliware.com.br if you want more information.
+
+[logo]: https://github.com/SparK-Cruz/elpho/raw/master/src/logo.png
