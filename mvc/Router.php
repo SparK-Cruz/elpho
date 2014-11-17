@@ -98,10 +98,12 @@
 
     public function getRequest(){
       $requestUri = new String($_SERVER["REQUEST_URI"]);
-      $request = $requestUri->toLowerCase()->split("/")->filter();
-      if($request[0]->equals(self::$root->replace("/", "")))
-        $request->shift();
+      $requestUri = $requestUri->toLowerCase();
 
+      if ($requestUri->startsWith(self::$root))
+        $requestUri = $requestUri->substr(strlen(self::$root));
+
+      $request = $requestUri->split("/")->filter();
       return $request;
     }
     public function findRoute($request=null, $method=null){

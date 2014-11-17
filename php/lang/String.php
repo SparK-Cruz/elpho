@@ -1,6 +1,7 @@
 <?php
   import(php.lang.ArrayList);
   import(php.lang.Dynamic);
+  import(php.lang.Math);
 
   /**
    * Classe String para PHP mapeada a partir da classe {@link http://download.oracle.com/javase/6/docs/api/java/lang/String.html String do JavaSE(tm)}
@@ -76,8 +77,14 @@
      * @return String
      */
     public function substr($start,$length=null){
-      if($start < 0) $start = $this->length()-$start;
-      if(!$length) $length = $this->length();
+      if($start < 0){
+        $start = $this->length()-$start;
+        $length = Math::abs($start);
+      }
+
+      if(!$length)
+        $length = $this->length()-$start;
+
       return new String(substr($this->value,$start,$length));
     }
 
