@@ -8,6 +8,7 @@
       $router = Router::getInstance(dirname(__FILE__));
 
       //** Sample routing error view customization
+      //ErrorController::$e500view = "e500.html";
       //ErrorController::$e404view = "e404.html";
       //ErrorController::$e401view = "e401.html";
 
