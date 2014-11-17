@@ -78,7 +78,7 @@
      */
     public function substr($start,$length=null){
       if($start < 0){
-        $start = $this->length()-$start;
+        $start = $this->length() + $start;
         $length = Math::abs($start);
       }
 
