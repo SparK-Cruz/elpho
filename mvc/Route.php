@@ -86,6 +86,10 @@
     }
 
     public function go($request){
-      call($this->callback, $this->readArgs($request));
+      try{
+        call($this->callback, $this->readArgs($request));
+      }catch (Exception $ex){
+        call(array(ErrorController, "e500"), array("exception"=>$ex));
+      }
     }
   }
