@@ -185,12 +185,12 @@
     public function clear(){
       if($this->isLocked) return false;
 
-      $this->resetIndex();
+      $this->resetPosition();
       $this->records = array();
       $this->hasRecords = false;
     }
 
-    public function resetIndex(){
+    public function resetPosition(){
       $this->position = -1;
       $this->inPosition = false;
       $this->record = new stdClass();
@@ -227,7 +227,7 @@
         return false;
 
       if(!isset($this->records[$this->position])){
-        $this->resetIndex();
+        $this->resetPosition();
         return false;
       }
 
@@ -241,7 +241,7 @@
       $this->isLocked = true;
     }
     public function invert(){
-      $this->resetIndex();
+      $this->resetPosition();
       $this->records = array_reverse($this->records,false);
     }
 
@@ -332,6 +332,15 @@
 
       $this->record->{$attribute} = $value;
     }
+
+    public function each($callback){
+      $this->resetPosition();
+      while($this->next()){
+        call($callback, $this);
+      }
+    }
+
+    //core
     private function queryResults($query,$options=array()){
       $defaults = new stdClass();
       $defaults->order = $this->keyField." ASC";
