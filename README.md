@@ -1,9 +1,6 @@
 ![alt text][logo]
-
-elpho
-=====
-
-Extension Library for PHP OO
+Extension Library for PHp Object-orientation
+============================================
 
 ### WARNING
 The core framework is meant for non-html serving php code.
@@ -88,4 +85,4 @@ Remember, doesn't matter how good a framework looks and feels, it's still PHP.
 
 Mail me at roger.cruz(at)ateliware.com.br if you want more information.
 
-[logo]: https://github.com/SparK-Cruz/elpho/raw/master/src/logo.png
+[logo]: https://raw.githubusercontent.com/SparK-Cruz/elpho/master/logo.png
