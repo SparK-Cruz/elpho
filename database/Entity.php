@@ -23,7 +23,7 @@
 
     private $statements;
 
-    protected $separator = "`";
+    protected $separators = array("`","`");
 
     //constructor
     protected function Entity(PDO $connection,$fieldList=array()){
@@ -69,6 +69,9 @@
         return;
       }
       $this->fieldList = func_get_args();
+    }
+    protected function setSeparators($open, $close){
+      $this->separators = array($open, $close);
     }
 
     //get
@@ -377,7 +380,8 @@
         $options = new stdClass();
 
       $prepared = new Dynamic();
-      $separator = $this->separator;
+      $openSeparator = $this->separators[0];
+      $closeSeparator = $this->separators[1];
 
       $prepared->order = $this->keyField." ASC";
       $prepared->where = "1=1";
@@ -398,26 +402,26 @@
       $limit = $prepared->limit;
 
       //Preparing C.R.U.D. statements
-      $this->statements->read = $this->connection->prepare("SELECT ".$separator.$this->keyField.$separator.", ".$separator.implode($separator.", ".$separator,$fields).$separator." FROM ".$separator.$this->table.$separator." WHERE ".$where." ORDER BY ".$order);
+      $this->statements->read = $this->connection->prepare("SELECT ".$openSeparator.$this->keyField.$closeSeparator.", ".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator." FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$where." ORDER BY ".$order);
       try{
         //MySQL and MSSQL2012 do it like this
-        $this->statements->readRange = $this->connection->prepare("SELECT ".$separator.$this->keyField.$separator.", ".$separator.implode($separator.", ".$separator,$fields).$separator." FROM ".$separator.$this->table.$separator." WHERE ".$where." ORDER BY ".$order." LIMIT ".$start.", ".$limit);
+        $this->statements->readRange = $this->connection->prepare("SELECT ".$openSeparator.$this->keyField.$closeSeparator.", ".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator." FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$where." ORDER BY ".$order." LIMIT ".$start.", ".$limit);
       }catch(Exception $e){
         try{
           //Older SQL implementations (like IBase/Firebird) do it like this
-          $this->statements->readRange = $this->connection->prepare("SELECT FIRST ".$limit." SKIP ".$start." ".$separator.$this->keyField.$separator.", ".$separator.implode($separator.", ".$separator,$fields).$separator." FROM ".$separator.$this->table.$separator." WHERE ".$where." ORDER BY ".$order);
+          $this->statements->readRange = $this->connection->prepare("SELECT FIRST ".$limit." SKIP ".$start." ".$openSeparator.$this->keyField.$closeSeparator.", ".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator." FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$where." ORDER BY ".$order);
         }catch(Exception $e){
           //MSSQL2008_R2 still can't do, so we workaround
-          $this->statements->readRange = $this->connection->prepare("SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY ".$order.") as RowNum, ".$separator.$this->keyField.$separator.", ".$separator.implode($separator.", ".$separator,$fields).$separator." FROM ".$separator.$this->table.$separator." WHERE ".$where.") AS internalResult WHERE RowNum >= ".$start." AND RowNum < ".($start + $limit)." ORDER BY RowNum");
+          $this->statements->readRange = $this->connection->prepare("SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY ".$order.") as RowNum, ".$openSeparator.$this->keyField.$closeSeparator.", ".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator." FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$where.") AS internalResult WHERE RowNum >= ".$start." AND RowNum < ".($start + $limit)." ORDER BY RowNum");
         }
       }
 
       if($this->readOnly)
         return;
 
-      $this->statements->create = $this->connection->prepare("INSERT INTO ".$separator.$this->table.$separator." (".$separator.implode($separator.", ".$separator,$fields).$separator.") VALUES(".implode(", ",array_map(function($field){ return ":".$field; },$fields)).")");
-      $this->statements->update = $this->connection->prepare("UPDATE ".$separator.$this->table.$separator." SET ".implode(", ",array_map(function($field) use($separator){ return $separator.$field.$separator." = :".$field; },$fields))." WHERE ".$separator.$this->keyField.$separator." = :".$this->keyField);
-      $this->statements->delete = $this->connection->prepare("DELETE FROM ".$separator.$this->table.$separator." WHERE ".$separator.$this->keyField.$separator." = :".$this->keyField);
+      $this->statements->create = $this->connection->prepare("INSERT INTO ".$openSeparator.$this->table.$closeSeparator." (".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator.") VALUES(".implode(", ",array_map(function($field){ return ":".$field; },$fields)).")");
+      $this->statements->update = $this->connection->prepare("UPDATE ".$openSeparator.$this->table.$closeSeparator." SET ".implode(", ",array_map(function($field) use($openSeparator,$closeSeparator){ return $openSeparator.$field.$closeSeparator." = :".$field; },$fields))." WHERE ".$openSeparator.$this->keyField.$closeSeparator." = :".$this->keyField);
+      $this->statements->delete = $this->connection->prepare("DELETE FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$openSeparator.$this->keyField.$closeSeparator." = :".$this->keyField);
     }
     public function toArray($exceptions=null,$_=null){
       $exceptions = func_get_args();
