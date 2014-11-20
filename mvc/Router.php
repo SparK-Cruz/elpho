@@ -97,7 +97,9 @@
     }
 
     public function getRequest(){
-      $requestUri = new String($_SERVER["REQUEST_URI"]);
+      $requestUri = new String();
+      if (isset($_SERVER["REQUEST_URI"]))
+        $requestUri = new String($_SERVER["REQUEST_URI"]);
 
       if ($requestUri->toLowerCase()->startsWith(self::$root))
         $requestUri = $requestUri->substr(strlen(self::$root));
@@ -111,7 +113,10 @@
 
       $routes = array();
       if ($method == null)
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
+        if (isset($_SERVER['REQUEST_METHOD']))
+          $method = strtolower($_SERVER['REQUEST_METHOD']);
+        else
+          $method = "get";
 
       if (isset($this->routes[$method]))
         $routes = $this->routes[$method];

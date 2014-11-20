@@ -12,8 +12,12 @@
       if(!is_array($methods))
         $methods = func_get_args();
 
+      $requestMethod = "get";
+      if (isset($_SERVER["REQUEST_METHOD"]))
+        $requestMethod = strtolower($_SERVER["REQUEST_METHOD"]);
+
       foreach($methods as $method){
-        if(strtolower($method) == strtolower($_SERVER["REQUEST_METHOD"]))
+        if(strtolower($method) == strtolower($requestMethod))
           return;
       }
 
