@@ -275,7 +275,10 @@
      * @return String
      */
     public function replace($procura,$substituto,$limite=false){
-      $limite = $limite?$limite+1:$this->length();
+      if($procura == "")
+        return new String($this->value);
+
+      $limite = $limite?$limite+1:($this->length()===0?1:$this->length());
       return $this->split($procura,$limite)->join($substituto);
     }
 
