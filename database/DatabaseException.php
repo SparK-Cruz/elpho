@@ -1,6 +1,6 @@
 <?php
   class DatabaseException extends Exception{
-    public __construct($message){
+    public function __construct($message){
       $this->message = $message;
     }
   }

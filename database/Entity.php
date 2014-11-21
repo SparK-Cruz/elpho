@@ -38,7 +38,7 @@
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       $this->prepareStatements();
-      $this->clear();
+      $this->reset();
     }
 
     //set
@@ -155,15 +155,12 @@
       $result->closeCursor();
     }
     private function fetchFromResult($result){
-      $this->clear();
-
-      $numRecords = $result->rowCount();
-      if($numRecords == 0) return;
+      $this->reset();
 
       while($record = $result->fetchObject()){
         $this->records[] = $record;
+        $this->hasRecords = true;
       }
-      $this->hasRecords = true;
     }
     public function findId($id,$fetch=true){
       $keyField = $this->getKeyField();
@@ -175,7 +172,7 @@
         $list = array();
 
       if(count($list) == 0)
-        return $this->clear();
+        return $this->reset();
 
       $where = array();
       foreach($list as $item){
@@ -185,15 +182,16 @@
     }
 
     //positioning
-    public function clear(){
-      if($this->isLocked) return false;
+    public function reset(){
+      if($this->isLocked)
+        return false;
 
-      $this->resetPosition();
+      $this->clear();
       $this->records = array();
       $this->hasRecords = false;
     }
 
-    public function resetPosition(){
+    public function clear(){
       $this->position = -1;
       $this->inPosition = false;
       $this->record = new stdClass();
@@ -230,7 +228,7 @@
         return false;
 
       if(!isset($this->records[$this->position])){
-        $this->resetPosition();
+        $this->clear();
         return false;
       }
 
@@ -244,7 +242,7 @@
       $this->isLocked = true;
     }
     public function invert(){
-      $this->resetPosition();
+      $this->clear();
       $this->records = array_reverse($this->records,false);
     }
 
@@ -283,6 +281,9 @@
         $this->connection->rollBack();
         throw new DatabaseException($e->getMessage());
       }
+
+      $this->records[] = $this->record;
+      $this->hasRecords = true;
 
       $eventClass = $isNew?Create:Update;
       $this->dispatchEvent(new $eventClass($result,$options));
@@ -327,7 +328,7 @@
 
       if(!isset($this->record->{$attribute})) return;
       $value = $this->record->{$attribute};
-      return new String(mb_detect_encoding($valor, 'UTF-8', true)?$valor:utf8_encode($value));
+      return new String(mb_detect_encoding($value, 'UTF-8', true)?$value:utf8_encode($value));
     }
     public function __set($attribute,$value){
       $trace = debug_backtrace();
@@ -337,7 +338,7 @@
     }
 
     public function each($callback){
-      $this->resetPosition();
+      $this->clear();
       while($this->next()){
         call($callback, $this);
       }
