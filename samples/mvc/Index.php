@@ -1,7 +1,8 @@
 <?php
-  require("elpho/startup.php");
+  require("../../startup.php");
 
   import(mvc);
+  import(controllers);
 
   class Index{
     public static final function main($args=array()){
@@ -19,10 +20,11 @@
 
     private static function mapRoutes($router){
       //** Sample "get" route
-      //$router->map(array("", "home"), array(Home, "index"));
+      $router->map(array("", "home"), array(Home, "index"));
+      $router->map("contact", array(Home, "contact"));
 
       //** Sample "post" route, other http methods work too
-      //$router->map("contact", array(Home, "sendEmail"), "post");
+      $router->map("contact", array(Home, "sendEmail"), "post");
 
       //** Sample route with parameters
       //$router->map("blog/*post", array(Blog, "post"));
