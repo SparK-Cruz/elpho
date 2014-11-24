@@ -5,7 +5,7 @@ Extension Library for PHp Object-orientation
 ### WARNING
 The core framework is meant for non-html serving php code.
 It's structure is dedicated to solve the leaked scope and procedural ancestry of PHP.
-This is not a MVC framework, but it has an built-in MVC module you can use.
+This is not a MVC framework, but it has a built-in MVC module you can use.
 The core is a language extension and even tough we try to fix some stuff, it's still PHP.
 
 ### Packaging
