@@ -62,11 +62,16 @@
      * @return String
      */
     public function substring($start,$end=null){
-      if(!$end) $end = $this->length()-1;
-      if($start < 0) $start = $this->length()-$start;
-      if($end < 0) $end = $this->length()+$end;
+      if(!$end)
+        $end = $this->length() -1;
 
-      $length = $end-$start+1;
+      if($start < 0)
+        $start = $this->length() + $start;
+
+      if($end < 0)
+        $end = $this->length() + $end;
+
+      $length = $end - $start +1;
       return new String(substr($this->value,$start,$length));
     }
 
