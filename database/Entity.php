@@ -323,16 +323,15 @@
 
     //extra
     public function __get($attribute){
-      $trace = debug_backtrace();
-      if(!is_a($trace[1]["object"],get_class($this))) return;
+      if(!isset($this->record->{$attribute}))
+        return;
 
-      if(!isset($this->record->{$attribute})) return;
       $value = $this->record->{$attribute};
       return new String(mb_detect_encoding($value, 'UTF-8', true)?$value:utf8_encode($value));
     }
     public function __set($attribute,$value){
-      $trace = debug_backtrace();
-      if(!is_a($trace[1]["object"],get_class($this))) return;
+      if (!in_array($attribute, $this->fieldList))
+        return;
 
       $this->record->{$attribute} = $value;
     }
