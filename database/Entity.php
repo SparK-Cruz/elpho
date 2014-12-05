@@ -117,13 +117,8 @@
       if(!is_array($options) and !is_object($options))
         return;
 
-      if(is_object($options)){
-        if(!($options instanceof ArrayAccess)
-          or ($options instanceof Iterator)
-          or ($options instanceof IteratorAggregate)
-          or ($options instanceof stdClass))
+      if(is_object($options) and !($options instanceof Object))
           return;
-      }
 
       $prepared = new stdClass();
 
