@@ -42,6 +42,7 @@
     }
     private function readArgs($request){
       $args = new Object();
+      parse_str(file_get_contents("php://input"),$inputData);
 
       foreach($this->argsIndexes as $key => $i){
         if($i[0] >= $request->length())
@@ -50,7 +51,7 @@
         $args->{$this->argsNames[$key]} = $request[$i[0]];
       }
 
-      foreach($_POST as $key => $value){
+      foreach($inputData as $key => $value){
         $args->{$key} = $value;
       }
 
