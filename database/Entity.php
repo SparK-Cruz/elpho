@@ -348,7 +348,7 @@
       $tokens = array();
       $string = $result->queryString;
       foreach(explode(" ",$string) as $part){
-        $part = preg_replace('/[^a-z:_]/','',$part);
+        $part = preg_replace('/[^A-Za-z:_]/','',$part);
         if(substr($part,0,1) !== ":") continue;
         $tokens[] = substr($part,1);
       }
