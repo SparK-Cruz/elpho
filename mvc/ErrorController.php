@@ -2,6 +2,10 @@
   import(mvc.Controller);
 
   class ErrorController extends Controller{
+    private static $default401 = "mvc/error/default401.html.php";
+    private static $default404 = "mvc/error/default404.html.php";
+    private static $default500 = "mvc/error/default500.html.php";
+
     public static $e500view = "";
     public static $e404view = "";
     public static $e401view = "";
@@ -10,7 +14,7 @@
       header("HTTP/1.1 404 Not found");
 
       if (self::$e404view === "")
-        return self::renderDefault404();
+        self::$e404view = self::$default404;
 
       $view = new View(self::$e404view);
       $view->render();
@@ -20,7 +24,7 @@
       header("HTTP/1.1 401 Access denied");
 
       if (self::$e401view === "")
-        return self::renderDefault401($args["message"]);
+        self::$e401view = self::$default401;
 
       $view = new View(self::$e401view);
       $view->message = $args["message"];
@@ -38,7 +42,7 @@
       );
 
       if (self::$e500view === "")
-        return self::renderDefault500($viewbag);
+        self::$e500view = self::$default500;
 
       $view = new View(self::$e500view);
       $view->type = $viewbag["type"];
@@ -46,45 +50,5 @@
       $view->stacktrace = $viewbag["stacktrace"];
       $view->render();
       exit();
-    }
-
-    private static final function renderDefault404(){
-      echo '<!DOCTYPE html>'.
-           '<html>'.
-           '  <head>'.
-           '    <meta charset="utf-8" />'.
-           '    <title>404 Object not found</title>'.
-           '  </head>'.
-           '  <body>'.
-           '    <h1>HTTP/1.1 404: Object not found</h1>'.
-           '  </body>'.
-           '</html>';
-    }
-    private static final function renderDefault401($message=""){
-      echo '<!DOCTYPE html>'.
-           '<html>'.
-           '  <head>'.
-           '    <meta charset="utf-8" />'.
-           '    <title>401 Access denied</title>'.
-           '  </head>'.
-           '  <body>'.
-           '    <h1>HTTP/1.1 401: Access denied</h1>'.
-           '    <p>'.$message.'</p>'.
-           '  </body>'.
-           '</html>';
-    }
-    private static final function renderDefault500($viewbag){
-      echo '<!DOCTYPE html>'.
-           '<html>'.
-           '  <head>'.
-           '    <meta charset="utf-8" />'.
-           '    <title>500 Internal server error</title>'.
-           '  </head>'.
-           '  <body>'.
-           '    <h1>HTTP/1.1 500: Internal server error</h1>'.
-           '    <h3>'.$viewbag["type"].'</h3>'.
-           '    <p>'.$viewbag["message"].'</p>'.
-           '  </body>'.
-           '</html>';
     }
   }
