@@ -16,18 +16,18 @@ Just notice the only way you tell a class belongs to a certain package is the fo
 
 Here is the HelloWorld.php sample:
 
-  <?php
-    require("path/to/elpho/startup.php");
+    <?php
+        require("path/to/elpho/startup.php");
 
-    import(php.lang.String);
+        import(php.lang.String);
 
-    class HelloWorld{
-      public static final function main($args=array()){
-        $word = new String("Hello World!");
-        print($word);
-      }
-    }
-  ?>
+        class HelloWorld{
+            public static final function main($args=array()){
+                $word = new String("Hello World!");
+                print($word);
+            }
+        }
+    ?>
 First line is only necessary in the requested file and once per request. All files exposed to the web should contain it.
 The third line is calling the topLevel function `import`, passing a `classId` string to it (notice the lack of slashes and quotes).
 The sixth line is declaring the entry method. After all the definitions are read, the framework automatically calls the main method of the entry class.
