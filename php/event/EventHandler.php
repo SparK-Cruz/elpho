@@ -23,7 +23,7 @@
       $this->setup(get_class($event));
       $event->setTargetOnce($this);
 
-      foreach($this->listeners[get_class($event)] as $listener){
+      foreach($this->listeners[$event::getName()] as $listener){
         $called = $listener[0];
         if($listener[1] != "") $called = array($listener[0],$listener[1]);
         call_user_func($called,$event);

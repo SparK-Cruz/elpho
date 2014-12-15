@@ -16,18 +16,18 @@ Just notice the only way you tell a class belongs to a certain package is the fo
 
 Here is the HelloWorld.php sample:
 
-	<?php
-		require("path/to/elpho/startup.php");
-		
-		import(php.lang.String);
-		
-		class HelloWorld{
-			public static final function main($args=array()){
-				$word = new String("Hello World!");
-				print($word);
-			}
-		}
-	?>
+  <?php
+    require("path/to/elpho/startup.php");
+
+    import(php.lang.String);
+
+    class HelloWorld{
+      public static final function main($args=array()){
+        $word = new String("Hello World!");
+        print($word);
+      }
+    }
+  ?>
 First line is only necessary in the requested file and once per request. All files exposed to the web should contain it.
 The third line is calling the topLevel function `import`, passing a `classId` string to it (notice the lack of slashes and quotes).
 The sixth line is declaring the entry method. After all the definitions are read, the framework automatically calls the main method of the entry class.
@@ -45,19 +45,19 @@ Just pass the main class file name and it will do the dirty work for you.
 
 3. `usePack(packageId)`
    This function is a shortcut, it allows you to add a package you already know to the importPath.
-   It allows you to use classes by it's package name like `new package\Class()` without having to type the whole thing.  
+   It allows you to use classes by it's package name like `new package\Class()` without having to type the whole thing.
    Eg:
 
 
-		<?php
-			//we have class "very.long.path.to.the.file.a.MyClass"
-			//and "very.long.path.to.the.file.b.MyClass"
-			//To use both:
-			usePack(very.long.path.to.the.file);
-			
-			$a = new a\MyClass(); //On the fly dynamic namespace declaration.
-			$b = new b\MyClass(); //Sounds great but be warned: it uses eval().
-		?>
+    <?php
+      //we have class "very.long.path.to.the.file.a.MyClass"
+      //and "very.long.path.to.the.file.b.MyClass"
+      //To use both:
+      usePack(very.long.path.to.the.file);
+
+      $a = new a\MyClass(); //On the fly dynamic namespace declaration.
+      $b = new b\MyClass(); //Sounds great but be warned: it uses eval().
+    ?>
 
 4. `loadExtension(path)`
    This function loads plugins and modules for the framework, as well as adds their path to the includePath and importPath, it also runs their `startup.php` if any.

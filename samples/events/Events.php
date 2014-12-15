@@ -1,27 +1,27 @@
 <?php
-	require("../../startup.php");
+  require("../../startup.php");
 
-	import(php.lang.Object);
+  import(php.lang.Object);
 
-	class Events{
-		public static final function main($args=array()){
-			$dispatcher = new DispatcherHelper();
-			$hardListener = new HardListener();
-			$dynamicListener = function($event){
-				print("<pre>");
-				print("DynamicListener ".get_class($event)."'s target is ".$event->getTarget());
-				print("</pre>");
-			};
+  class Events{
+    public static final function main($args=array()){
+      $dispatcher = new DispatcherHelper();
+      $hardListener = new HardListener();
+      $dynamicListener = function($event){
+        print("<pre>");
+        print("DynamicListener ".get_class($event)."'s target is ".$event->getTarget());
+        print("</pre>");
+      };
 
-			$otherListener = new Object();
-			$otherListener->ouvir = function($self, $event){
-				echo $event->getName();
-			}
+      $otherListener = new Object();
+      $otherListener->ouvir = function($self, $event){
+        echo $event->getName();
+      };
 
-			$dispatcher->addEventListener(EventHelper, array($hardListener,'listeningMethod'));
-			$dispatcher->addEventListener(EventHelper, $dynamicListener);
-			$dispatcher->addeventListener(EventHelper, array($otherListener, "ouvir"));
+      $dispatcher->addEventListener(EventHelper, array($hardListener,'listeningMethod'));
+      $dispatcher->addEventListener(EventHelper, $dynamicListener);
+      $dispatcher->addeventListener(EventHelper, array($otherListener, "ouvir"));
 
-			$dispatcher->run();
-		}
-	}
+      $dispatcher->run();
+    }
+  }
