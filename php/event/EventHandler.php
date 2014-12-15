@@ -2,9 +2,10 @@
   abstract class EventHandler{
     private $listeners = array();
 
-    public function addEventListener($eventName,$listener,$method=""){
-      if(class_exists($eventName,false))
-        $eventName = $eventName::getName();
+    public function addEventListener($event,$listener,$method=""){
+      $eventName = $event;
+      if (is_object($event))
+        $eventName = $event::getName();
 
       $this->setup($eventName);
 
@@ -20,7 +21,7 @@
       }
     }
     protected function dispatchEvent($event){
-      $this->setup(get_class($event));
+      $this->setup($event::getName());
       $event->setTargetOnce($this);
 
       foreach($this->listeners[$event::getName()] as $listener){
