@@ -130,4 +130,8 @@
 
       return self::$default;
     }
+
+    public function serve() {
+      $this->findRoute()->go($this->getRequest());
+    }
   }
