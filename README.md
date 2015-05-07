@@ -11,22 +11,29 @@ The core is a language extension and even tough we try to fix some stuff, it's s
 The framework uses classes as a means for isolation of files.
 Here is the HelloWorld.php example:
 
-    <?php
-        require("path/to/elpho/startup.php");
+```
+<?php
+   //The framework
+   require("path/to/elpho/startup.php");
 
-        class HelloWorld{
-            public static final function main($args=array()){
-                $word = new String("Hello World!");
-                print($word);
-            }
-        }
-    ?>
-First line is only necessary in the apache requested file and once per request. All files exposed to the web should contain it.
-The sixth line is declaring the entry method. After all the definitions are read, the framework automatically calls the main method of the entry class.
+   //The class name is same as file without ".php"
+   class HelloWorld{
+      //Entry method (d'JAVu)
+      public static final function main($args=array()){
+         //Wrapper class with lots of functions
+         //Not really useful here
+         $word = new String("Hello World!");
+
+         //It calls toString() using PHP magic methods
+         print($word);
+      }
+   }
+?>
+```
 
 ### System
 The system folder contains all the framework core files.
-Userland functions are declared in the file `system/topLevel.php`.
+Userland functions are declared in the file `system/topLevel.php`, they are:
 
 1. `registerMain(file)`
 This method is used when you need to tell elpho that your exposed file is not the main class.
