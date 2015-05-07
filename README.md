@@ -59,6 +59,18 @@ Now you may use your named constructor. ex: Class `ArrayList` has method `_from`
 7. `matchTypes(type [, type]...)`
 Returns true if the list of arguments in the **current function** matches the types passed to it.
 
+8. `requireFile(path)`
+Requires file and defines a "define" with class name if class exists with same name as file without extension.
+
+9. `requireOnce(path)`
+Same as `requireFile` but won't attempt to load the same file twice in the same request.
+
+10. `requireDir(path)`
+Used to load all files in directory at once, also defines a "define" with class names if they match the filename.
+
+11. `requireDirOnce(path)`
+Same as `requireDir` but won't attempt to load the same directory twice in the same request.
+
 ## WORK IN PROGRESS
 This framework is a work in progress and always will be.
 Remember, doesn't matter how good a framework looks and feels, it's still PHP.
