@@ -2,7 +2,7 @@
   final class LoadManager extends StaticType{
     private static $ELPHO_PATH = "";
     private static $ignoredEntries = "?";
-    private static $firstRunLoad = true;
+    private static $firstTimeLoad = true;
 
     public static function loadElphoPath($path){
       if(!self::$firstTimeLoad) return;
@@ -12,7 +12,7 @@
       }
 
       self::addToIncludePath($path);
-      self::$firstRunLoad = false;
+      self::$firstTimeLoad = false;
     }
     public static function loadExtension($path){
       self::addToIncludePath($path);
@@ -26,25 +26,56 @@
     public static function requireDirOnce($dir){
       self::requireDirInternal($dir, true);
     }
-    private static function requireDirInternal($dir, $once=false){
+    public static function requireOnce($file){
+      require_once($file);
+      self::defineClassIfExists(basename($file, ".php"));
+    }
+    public static function requireFile($file){
+      require($file);
+      self::defineClassIfExists(basename($file, ".php"));
+    }
+    private static function defineClassIfExists($file){
+      $className = basename($file, ".php");
+      if(class_exists($className) && !defined($className))
+        define($className, $className);
+    }
+    private static function requireDirInternal($relative, $once=false){
+      $isFramework = false;
+      $framework = realpath(self::$ELPHO_PATH.'/'.$relative);
+      $local = realpath($relative);
+
+      $dir = $local;
+      if(!file_exists($local)){
+        $dir = $framework;
+        $isFramework = true;
+      }
+
       $handler = opendir($dir);
       while(($file = readdir($handler)) != null){
-        if ($file[0] == ".")
+        if($file[0] == ".")
           continue;
 
-        if (basename($file) == basename($file, ".php"))
+        if(basename($file) == basename($file, ".php"))
           continue;
 
-        if (is_file($file)){
-          if ($once){
-            require_once($file);
+        $path = $relative."/".$file;
+
+        if($isFramework){
+          if(!is_file($framework.'/'.$file))
             continue;
-          }
-          require($file);
+        } else
+          if(!is_file($path))
+            continue;
+
+        if($once){
+          self::requireOnce($path);
+          continue;
         }
+        self::requireFile($path);
       }
       closedir($handler);
     }
+
     private static function addToIncludePath($path){
       $entries = str_replace(".".PATH_SEPARATOR,'',get_include_path());
       set_include_path(".".PATH_SEPARATOR.$path.PATH_SEPARATOR.$entries);

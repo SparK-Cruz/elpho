@@ -1,5 +1,7 @@
 <?php
-  class Read extends \php\event\Event{
+  requireOnce("database/event/DatabaseEvent.php");
+
+  class Read extends DatabaseEvent{
     private $index;
 
     public function Read($index){

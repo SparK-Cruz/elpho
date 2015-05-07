@@ -1,8 +1,8 @@
 <?php
-  require_once("php/lang/Dynamic.php");
-  require_once("php/lang/String.php");
-  require_once("php/lang/ArrayList.php");
-  require_once("php/event/EventHandler.php");
+  requireOnce("php/lang/Dynamic.php");
+  requireOnce("php/lang/String.php");
+  requireOnce("php/lang/ArrayList.php");
+  requireOnce("php/event/EventHandler.php");
 
   class Object extends EventHandler implements ArrayAccess, Iterator{
     private $_prototype;

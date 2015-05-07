@@ -1,5 +1,5 @@
 <?php
-  require_once("php/io/file/File.php");
+  requireOnce("php/io/file/File.php");
 
   class Image extends File{
     protected $width;

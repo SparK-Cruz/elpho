@@ -1,5 +1,5 @@
 <?php
-  require_once("php/lang/String.php");
+  requireOnce("php/lang/String.php");
 
   class File{
     protected $nome;

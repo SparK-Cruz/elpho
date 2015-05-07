@@ -7,8 +7,11 @@
   }
 
   require_once("system/topLevel.php");
-  require_dir_once("php/lang");
-  require_dir_once("system");
+  require_once("php/lang/StaticType.php");
+  require_once("system/LoadManager.php");
+  require_once("system/Starter.php");
 
-  Starter::start(dirname(__FILE__));
+  Starter::start(__DIR__);
+
+  requireDirOnce("php/lang");
 

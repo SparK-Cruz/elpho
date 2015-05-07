@@ -5,14 +5,17 @@
   function loadExtension($path){
     LoadManager::loadExtension($path);
   }
-  function __autoload($classe){
-    LoadManager::autoload($classe);
-  }
 
-  function require_dir_once($dir){
+  function requireOnce($file){
+    LoadManager::requireOnce($file);
+  }
+  function requireFile($file){
+    LoadManager::requireFile($file);
+  }
+  function requireDirOnce($dir){
     LoadManager::requireDirOnce($dir);
   }
-  function require_dir($dir){
+  function requireDir($dir){
     LoadManager::requireDir($dir);
   }
 

@@ -9,7 +9,7 @@
       LoadManager::loadElphoPath($path);
       self::registerMain();
 
-      register_shutdown_function(array(Starter,"callPrimaryMethods"));
+      register_shutdown_function(array("Starter","callPrimaryMethods"));
       self::$started = true;
     }
 
@@ -22,19 +22,27 @@
     }
 
     private static function callEntry($args=array()){
-      if(!self::$entryMethod) return;
-      if(!method_exists(self::$entryMethod[0],self::$entryMethod[1])) return;
-      call_user_func(self::$entryMethod,$args);
+      if(!self::$entryMethod)
+        return;
+
+      if(!method_exists(self::$entryMethod[0],self::$entryMethod[1]))
+        return;
+
+      call(self::$entryMethod,$args);
     }
 
     private static function callExit(){
-      if(!self::$exitMethod) return;
-      if(!method_exists(self::$exitMethod[0],self::$exitMethod[1])) return;
-      call_user_func(self::$exitMethod);
+      if(!self::$exitMethod)
+        return;
+
+      if(!method_exists(self::$exitMethod[0],self::$exitMethod[1]))
+        return;
+
+      call(self::$exitMethod);
     }
 
     private static function registerEntryClass($target){
-      self::registerEntry(array($target,"run"));
+      self::registerEntry(array($target,"main"));
       self::registerExit(array($target,"shutdown"));
     }
 

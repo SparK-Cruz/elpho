@@ -1,7 +1,7 @@
 <?php
-  require_once("php/lang/ArrayList.php");
-  require_once("php/lang/Dynamic.php");
-  require_once("php/lang/Math.php");
+  requireOnce("php/lang/ArrayList.php");
+  requireOnce("php/lang/Dynamic.php");
+  requireOnce("php/lang/Math.php");
 
   /**
    * Classe String para PHP mapeada a partir da classe {@link http://download.oracle.com/javase/6/docs/api/java/lang/String.html String do JavaSE(tm)}

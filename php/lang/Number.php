@@ -1,6 +1,6 @@
 <?php
-  require_once("php/lang/Math.php");
-  require_once("php/lang/String.php");
+  requireOnce("php/lang/Math.php");
+  requireOnce("php/lang/String.php");
   /**
    * Classe Number para PHP
    * @author Roger 'SparK' Rodrigues da Cruz

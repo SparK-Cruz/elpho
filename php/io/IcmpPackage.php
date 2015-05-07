@@ -1,6 +1,6 @@
 <?php
-  require_once("php/lang/String.php");
-  require_once("php/io/Socket.php");
+  requireOnce("php/lang/String.php");
+  requireOnce("php/io/Socket.php");
 
   class IcmpPackage{
     private $data = "";

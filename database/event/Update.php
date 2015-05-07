@@ -1,5 +1,7 @@
 <?php
-  class Update extends \database\event\Event{
+  requireOnce("database/event/DatabaseEvent.php");
+
+  class Update extends DatabaseEvent{
     public function getName(){
       return "databaseUpdate";
     }

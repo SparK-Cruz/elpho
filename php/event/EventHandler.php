@@ -4,7 +4,7 @@
 
     public function addEventListener($event,$listener,$method=""){
       $eventName = $event;
-      if (is_object($event))
+      if (is_object($event) || class_exists($event))
         $eventName = $event::getName();
 
       $this->setup($eventName);

@@ -1,5 +1,5 @@
 <?php
-  require_dir_once("database");
+  requireDirOnce("database");
 
   class SampleTable extends Entity{
     public function SampleTable(PDO $connection=null){

@@ -1,8 +1,9 @@
 <?php
+  define("DEBUG", 0);
   require("../../startup.php");
 
-  require_dir_once("mvc");
-  require_dir_once("controllers");
+  requireDirOnce("mvc");
+  requireDirOnce("controllers");
 
   class Index{
     public static final function main($args=array()){
@@ -15,16 +16,16 @@
 
       self::mapRoutes($router);
 
-      $router->findRoute()->go($router->getRequest());
+      $router->serve();
     }
 
     private static function mapRoutes($router){
       //** Sample "get" route
-      $router->map(array("", "home"), array(Home, "index"));
-      $router->map("contact", array(Home, "contact"));
+      $router->map(array("", "home"), array("Home", "index"));
+      $router->map("contact", array("Home", "contact"));
 
       //** Sample "post" route, other http methods work too
-      $router->map("contact", array(Home, "sendEmail"), "post");
+      $router->map("contact", array("Home", "sendEmail"), "post");
 
       //** Sample route with parameters
       //$router->map("blog/*post", array(Blog, "post"));

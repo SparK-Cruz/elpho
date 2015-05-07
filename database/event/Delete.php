@@ -1,5 +1,7 @@
 <?php
-  class Delete extends \database\event\Event{
+  requireOnce("database/event/DatabaseEvent.php");
+
+  class Delete extends DatabaseEvent{
     public function getName(){
       return "databaseDelete";
     }

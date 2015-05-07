@@ -1,7 +1,10 @@
 <?php
   require("../../startup.php");
 
-  require_once("php/lang/Object.php");
+  requireOnce("php/lang/Object.php");
+  requireOnce("DispatcherHelper.php");
+  requireOnce("EventHelper.php");
+  requireOnce("HardListener.php");
 
   class Events{
     public static final function main($args=array()){
@@ -9,13 +12,15 @@
       $hardListener = new HardListener();
       $dynamicListener = function($event){
         print("<pre>");
-        print("DynamicListener ".get_class($event)."'s target is ".$event->getTarget());
+        print("DynamicListener ".$event::getName()."'s target is ".$event->getTarget());
         print("</pre>");
       };
 
       $otherListener = new Object();
       $otherListener->ouvir = function($self, $event){
-        echo $event->getName();
+        print("<pre>");
+        print($self." listener method ".$event::getName()."'s target is ".$event->getTarget());
+        print("</pre>");
       };
 
       $dispatcher->addEventListener(EventHelper, array($hardListener,'listeningMethod'));

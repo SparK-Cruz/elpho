@@ -1,5 +1,5 @@
 <?php
-  require_once("php/event/Event.php");
+  requireOnce("php/event/Event.php");
 
   class EventHelper extends Event{
     public function getName(){

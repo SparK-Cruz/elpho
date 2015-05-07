@@ -1,6 +1,6 @@
 <?php
-  require_once("php/lang/String.php");
-  require_once("php/io/file/File.php");
+  requireOnce("php/lang/String.php");
+  requireOnce("php/io/file/File.php");
 
   class Log{
 

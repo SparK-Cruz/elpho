@@ -1,8 +1,8 @@
 <?php
-  require_once("php/lang/String.php");
-  require_once("php/io/video/YouTubeVideo.php");
-  require_once("php/io/video/VimeoVideo.php");
-  require_once("php/io/IoException.php");
+  requireOnce("php/lang/String.php");
+  requireOnce("php/io/video/YouTubeVideo.php");
+  requireOnce("php/io/video/VimeoVideo.php");
+  requireOnce("php/io/IoException.php");
 
   abstract class Video{
     public static function create($id){
