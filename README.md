@@ -11,7 +11,7 @@ The core is a language extension and even tough we try to fix some stuff, it's s
 The framework uses classes as a means for isolation of files.
 Here is the HelloWorld.php example:
 
-```
+```php
 <?php
    //The framework
    require("path/to/elpho/startup.php");
