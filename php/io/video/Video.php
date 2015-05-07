@@ -1,8 +1,8 @@
 <?php
-  import(php.lang.String);
-  import(php.io.video.YouTubeVideo);
-  import(php.io.video.VimeoVideo);
-  import(php.io.IoException);
+  require_once("php/lang/String.php");
+  require_once("php/io/video/YouTubeVideo.php");
+  require_once("php/io/video/VimeoVideo.php");
+  require_once("php/io/IoException.php");
 
   abstract class Video{
     public static function create($id){

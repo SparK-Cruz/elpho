@@ -6,8 +6,7 @@
 
     public static function start($path){
       if (self::$started) throw new Exception("Starter can only be run once!");
-      $ignored = str_replace(".".PATH_SEPARATOR,'',get_include_path());
-      LoadManager::loadElphoPath($path,$ignored);
+      LoadManager::loadElphoPath($path);
       self::registerMain();
 
       register_shutdown_function(array(Starter,"callPrimaryMethods"));
@@ -35,8 +34,8 @@
     }
 
     private static function registerEntryClass($target){
-      self::registerEntry(array($target,"main"));
-      self::registerExit(array($target,"cleanUp"));
+      self::registerEntry(array($target,"run"));
+      self::registerExit(array($target,"shutdown"));
     }
 
     private static function fixShutdownScope(){
@@ -46,7 +45,7 @@
     public static function callPrimaryMethods(){
       try{
         self::fixShutdownScope();
-        self::callEntry($_REQUEST);
+        self::callEntry(parse_str(file_get_contents("php://input"),$inputData));
         self::callExit();
       }catch(Exception $e){
         echo $e->getMessage();
@@ -54,7 +53,9 @@
     }
 
     public static function registerMain($filename=null){
-      if(!$filename) $filename = $_SERVER["SCRIPT_FILENAME"];
+      if(!$filename)
+        $filename = $_SERVER["SCRIPT_FILENAME"];
+
       $currentClass = basename($filename,".php");
       self::registerEntryClass($currentClass);
     }

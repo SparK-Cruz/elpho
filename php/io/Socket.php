@@ -1,6 +1,6 @@
 <?php
-  import(php.lang.String);
-  import(php.io.IoException);
+  require_once("php/lang/String.php");
+  require_once("php/io/IoException.php");
 
   class Socket{
     private $handle;

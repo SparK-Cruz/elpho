@@ -1,7 +1,7 @@
 <?php
-  import(php.lang.String);
-  import(mvc.Route);
-  import(mvc.ErrorController);
+  require_once("php/lang/String.php");
+  require_once("mvc/Route.php");
+  require_once("mvc/ErrorController.php");
 
   class Router{
     private static $instance = null;

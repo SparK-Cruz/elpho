@@ -1,5 +1,5 @@
 <?php
-  import(php.lang.String);
+  require_once("php/lang/String.php");
 
   class ArrayList implements Serializable, ArrayAccess, IteratorAggregate{
     protected $elements;

@@ -1,6 +1,6 @@
 <?php
-  import(php.lang.String);
-  import(php.io.file.File);
+  require_once("php/lang/String.php");
+  require_once("php/io/file/File.php");
 
   class Log{
 

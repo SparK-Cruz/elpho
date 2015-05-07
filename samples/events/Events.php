@@ -1,7 +1,7 @@
 <?php
   require("../../startup.php");
 
-  import(php.lang.Object);
+  require_once("php/lang/Object.php");
 
   class Events{
     public static final function main($args=array()){

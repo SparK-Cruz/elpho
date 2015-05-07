@@ -1,8 +1,8 @@
 <?php
   require("../../startup.php");
 
-  import(mvc);
-  import(controllers);
+  require_dir_once("mvc");
+  require_dir_once("controllers");
 
   class Index{
     public static final function main($args=array()){
