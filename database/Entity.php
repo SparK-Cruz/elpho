@@ -1,10 +1,10 @@
 <?php
-  import(php.lang.String);
-  import(php.lang.ArrayList);
-  import(php.lang.Dynamic);
-  import(php.event.EventHandler);
-  import(database.DatabaseException);
-  import(database.event);
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/lang/Dynamic.php");
+  require_once("php/event/EventHandler.php");
+  require_once("database/DatabaseException.php");
+  require_dir_once("database/event");
 
   abstract class Entity extends EventHandler{
     private $table;

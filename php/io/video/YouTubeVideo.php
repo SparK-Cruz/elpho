@@ -1,7 +1,7 @@
 <?php
-  import(php.io.video.Embedable);
-  import(php.io.file.Image);
-  import(php.io.IoException);
+  require_once("php/io/video/Embedable.php");
+  require_once("php/io/file/Image.php");
+  require_once("php/io/IoException.php");
 
   class YouTubeVideo implements Embedable{
     private $id;

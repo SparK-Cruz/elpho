@@ -2,17 +2,18 @@
   function registerMain($filename=null){
     Starter::registerMain($filename);
   }
-  function import($root=false){
-    LoadManager::import($root);
-  }
-  function usePack($root){
-    LoadManager::registerFolder($root);
-  }
   function loadExtension($path){
     LoadManager::loadExtension($path);
   }
   function __autoload($classe){
     LoadManager::autoload($classe);
+  }
+
+  function require_dir_once($dir){
+    LoadManager::requireDirOnce($dir);
+  }
+  function require_dir($dir){
+    LoadManager::requireDir($dir);
   }
 
   function call($callback,$args=null,$_=null){
@@ -36,7 +37,7 @@
     eval("class ".$name." extends ".$class."{ public function __construct(){ call_user_func_array(array('parent','_".$constructor."'), func_get_args()); } }");
   }
 
-  function checkOverload($type,$_=null){
+  function matchTypes($type,$_=null){
     $trace = debug_backtrace();
     $types = func_get_args();
     $arguments = $trace[1]["args"];
@@ -51,7 +52,6 @@
         continue;
       }
 
-      $type = ($type=="float"?"double":$type);
       if(gettype($argument) !== $type) return false;
     }
     return true;

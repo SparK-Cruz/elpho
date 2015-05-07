@@ -1,6 +1,6 @@
 <?php
-  import(php.event.EventHandler);
-  import(EventHelper);
+  require_once("php/event/EventHandler.php");
+  require_once("EventHelper.php");
 
   class DispatcherHelper extends EventHandler{
     public function DispatcherHelper(){}

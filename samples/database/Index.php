@@ -1,8 +1,8 @@
 <?php
   require("../../startup.php");
 
-  import(database);
-  import(SampleTable);
+  require_dir_once("database");
+  require_once("SampleTable.php");
 
   class Index{
     public static final function main($args=array()){

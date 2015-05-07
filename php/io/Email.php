@@ -3,10 +3,10 @@
    * @package php.io
    * @author SparK
    */
-  import(php.lang.String);
-  import(php.lang.ArrayList);
-  import(php.io.IoException);
-  import(php.io.file.File);
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/io/IoException.php");
+  require_once("php/io/file/File.php");
 
   class Email{
     private $charset;

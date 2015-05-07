@@ -1,8 +1,8 @@
 <?php
-  import(php.lang.Dynamic);
-  import(php.lang.String);
-  import(php.lang.ArrayList);
-  import(php.event.EventHandler);
+  require_once("php/lang/Dynamic.php");
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/event/EventHandler.php");
 
   class Object extends EventHandler implements ArrayAccess, Iterator{
     private $_prototype;

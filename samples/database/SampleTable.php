@@ -1,5 +1,5 @@
 <?php
-  import(database);
+  require_dir_once("database");
 
   class SampleTable extends Entity{
     public function SampleTable(PDO $connection=null){

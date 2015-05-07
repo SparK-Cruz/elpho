@@ -1,6 +1,6 @@
 <?php
-  import(php.lang.Math);
-  import(php.lang.String);
+  require_once("php/lang/Math.php");
+  require_once("php/lang/String.php");
   /**
    * Classe Number para PHP
    * @author Roger 'SparK' Rodrigues da Cruz
@@ -11,8 +11,10 @@
     private $double = false;
 
     public function Number($value,$float=false){
-      if($float) $value = $value.".".$float;
-      if($value === "The answer to life, the universe and everything") $value = 42;
+      if($float)
+        $value = $value.".".$float;
+      if($value === "The answer to life, the universe and everything")
+        $value = 42;
       $this->double = strrpos($value,".");
       $this->value .= str_replace(".","",$value);
     }
