@@ -113,16 +113,15 @@
     public function __get($property){
       if($property == "prototype") return $this->_prototype[0];
 
-      $value = null;
+      if(isset($this->properties->{$property}))
+        return $this->properties->{$property};
 
       foreach($this->_prototype as $proto){
         if(isset($proto[$property]))
-          $value = $proto[$property];
+          return $proto[$property];
       }
-      if(isset($this->properties->{$property}))
-        $value = $this->properties->{$property};
 
-      return $value;
+      return null;
     }
     public function __call($key,$params){
       $subject = null;
