@@ -27,6 +27,10 @@
     protected static function denyAccess($message=''){
       $args = $_REQUEST;
       $args["message"] = $message;
-      call(array(ErrorController, "e401"), $args);
+      call(array("ErrorController", "e401"), $args);
+    }
+
+    public static function _beforeFilter($method, $args){
+      return true;
     }
   }

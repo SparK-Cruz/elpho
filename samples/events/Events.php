@@ -1,10 +1,10 @@
 <?php
   require("../../startup.php");
 
-  requireOnce("php/lang/Object.php");
-  requireOnce("DispatcherHelper.php");
-  requireOnce("EventHelper.php");
-  requireOnce("HardListener.php");
+  require_once("php/lang/Object.php");
+  require_once("DispatcherHelper.php");
+  require_once("EventHelper.php");
+  require_once("HardListener.php");
 
   class Events{
     public static final function main($args=array()){

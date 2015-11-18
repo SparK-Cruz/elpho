@@ -1,5 +1,5 @@
 <?php
-  requireOnce("database/event/DatabaseEvent.php");
+  require_once("database/event/DatabaseEvent.php");
 
   class Create extends DatabaseEvent{
     public function getName(){

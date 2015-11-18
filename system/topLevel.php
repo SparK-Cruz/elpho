@@ -5,20 +5,9 @@
   function loadExtension($path){
     LoadManager::loadExtension($path);
   }
-
-  function requireOnce($file){
-    LoadManager::requireOnce($file);
+  function requireDirOnce($path){
+    LoadManager::requireDirOnce($path);
   }
-  function requireFile($file){
-    LoadManager::requireFile($file);
-  }
-  function requireDirOnce($dir){
-    LoadManager::requireDirOnce($dir);
-  }
-  function requireDir($dir){
-    LoadManager::requireDir($dir);
-  }
-
   function call($callback,$args=null,$_=null){
     $args = func_get_args();
     array_shift($args);

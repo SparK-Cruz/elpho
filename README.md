@@ -2,14 +2,18 @@
 Extension Library for PHp Object-orientation
 ============================================
 
+Your non-invasive, lightweight, fast, dev-tool framework
+
 ### WARNING
-The core framework is meant for non-html serving php code.
+The framework core is meant for non-html-serving php code.
 It's structure is dedicated to solve the leaked scope and procedural ancestry of PHP.
-This is not a MVC framework, but it has a built-in MVC module you can use.
+Although we do have a built-in MVC module, this is not a MVC framework.
+
 The core is a language extension and even tough we try to fix some stuff, it's still PHP.
 
-The framework uses classes as a means for isolation of files.
-Here is the HelloWorld.php example:
+## Hello Core
+
+Here is the very verbose HelloWorld.php example:
 
 ```php
 <?php
@@ -31,7 +35,60 @@ Here is the HelloWorld.php example:
 ?>
 ```
 
-### System
+## Hello MVC
+
+Here is the MVC module "Hello World":
+
+```php
+<?php
+   //The framework
+   require("path/to/elpho/startup.php");
+
+   requireDirOnce("mvc");
+
+   //The entry class
+   class Index{
+      public static final function main($args=array()){
+         //Router
+         $router = Router::getInstance(__DIR__);
+
+         $router->map(array("", "home"), array("Home", "index"));
+      }
+   }
+?>
+```
+
+```php
+<?php
+   //Home controller
+   class Home extends Controller{
+      public static function index($args){
+         //Ideally use the mvc.View class
+         $view = new View("template.html.php");
+         $view->myMessageAttribute = "Hello World!";
+         $view->render();
+      }
+   }
+?>
+```
+
+```php
+<!-- template.html.php -->
+<!DOCTYPE html>
+<html>
+   <body>
+      <p><?=$viewbag->myMessageAttribute?></p>
+   </body>
+</html>
+```
+
+```
+   #.htaccess
+   RewriteEngine On
+   RewriteRule (.*) Index.php [QSD,L]
+```
+
+## System
 The system folder contains all the framework core files.
 Userland functions are declared in the file `system/topLevel.php`, they are:
 
@@ -62,7 +119,7 @@ Returns true if the list of arguments in the **current function** matches the ty
 8. `requireFile(path)`
 Requires file and defines a "define" with class name if class exists with same name as file without extension.
 
-9. `requireOnce(path)`
+9. `require_once(path)`
 Same as `requireFile` but won't attempt to load the same file twice in the same request.
 
 10. `requireDir(path)`
@@ -73,8 +130,8 @@ Same as `requireDir` but won't attempt to load the same directory twice in the s
 
 ## WORK IN PROGRESS
 This framework is a work in progress and always will be.
-Remember, doesn't matter how good a framework looks and feels, it's still PHP.
+Remember, doesn't matter how good a framework looks and feels, it's still PHP and that alone is "ewww" enough.
 
-Mail me at spark.crz(at)gmail.com if you need to talk.
+Mail me at spark.crz(at)gmail.com if you wanna chat!
 
 [logo]: https://raw.githubusercontent.com/SparK-Cruz/elpho/master/logo.png

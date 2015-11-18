@@ -2,7 +2,7 @@
   require("../../startup.php");
 
   requireDirOnce("database");
-  requireOnce("SampleTable.php");
+  require_once("SampleTable.php");
 
   class Index{
     public static final function main($args=array()){

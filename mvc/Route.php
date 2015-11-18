@@ -88,9 +88,13 @@
 
     public function go($request){
       try{
-        call($this->callback, $this->readArgs($request));
+        $args = $this->readArgs($request);
+        $signal = call(array($this->callback[0], "_beforeFilter"), $this->callback[1], $args);
+        if($signal)
+          call($this->callback, $args);
+
       }catch (Exception $ex){
-        call(array(ErrorController, "e500"), array("exception"=>$ex));
+        call(array("ErrorController", "e500"), array("exception"=>$ex));
       }
     }
   }

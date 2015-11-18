@@ -1,7 +1,7 @@
 <?php
-  requireOnce("php/io/video/Embedable.php");
-  requireOnce("php/io/file/Image.php");
-  requireOnce("php/io/IoException.php");
+  require_once("php/io/video/Embedable.php");
+  require_once("php/io/file/Image.php");
+  require_once("php/io/IoException.php");
 
   class VimeoVideo implements Embedable{
     private $id;

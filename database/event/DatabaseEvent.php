@@ -1,5 +1,5 @@
 <?php
-  requireOnce("php/event/Event.php");
+  require_once("php/event/Event.php");
 
   abstract class DatabaseEvent extends Event{
     private $statement;

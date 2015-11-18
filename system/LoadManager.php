@@ -20,19 +20,8 @@
       if(file_exists($file))
         require($file);
     }
-    public static function requireDir($dir){
-      self::requireDirInternal($dir, false);
-    }
-    public static function requireDirOnce($dir){
-      self::requireDirInternal($dir, true);
-    }
-    public static function requireOnce($file){
-      require_once($file);
-      self::defineClassIfExists(basename($file, ".php"));
-    }
-    public static function requireFile($file){
-      require($file);
-      self::defineClassIfExists(basename($file, ".php"));
+    public static function requireDirOnce($path){
+      self::requireDirInternal($path, true);
     }
     private static function defineClassIfExists($file){
       $className = basename($file, ".php");
@@ -68,10 +57,10 @@
             continue;
 
         if($once){
-          self::requireOnce($path);
+          require_once($path);
           continue;
         }
-        self::requireFile($path);
+        require($path);
       }
       closedir($handler);
     }

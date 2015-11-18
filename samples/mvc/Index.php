@@ -28,8 +28,8 @@
       $router->map("contact", array("Home", "sendEmail"), "post");
 
       //** Sample route with parameters
-      //$router->map("blog/*post", array(Blog, "post"));
-      //$router->map("blog/page/#page", array(Blog, "list"));
+      //$router->map("blog/*post", array("Blog", "post"));
+      //$router->map("blog/page/#page", array("Blog", "list"));
       //These will produce $args["post"] and $args["page"] respectively in their controllers' methods
     }
   }

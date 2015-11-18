@@ -1,7 +1,7 @@
 <?php
-  requireOnce("php/lang/String.php");
-  requireOnce("mvc/Route.php");
-  requireOnce("mvc/ErrorController.php");
+  require_once("php/lang/String.php");
+  require_once("mvc/Route.php");
+  require_once("mvc/ErrorController.php");
 
   class Router{
     private static $instance = null;
@@ -10,7 +10,7 @@
 
     private $routes = array();
 
-    public static function getInstance($index=null, $default=array(ErrorController, "e404")){
+    public static function getInstance($index=null, $default=array("ErrorController", "e404")){
       if(self::$instance == null){
         if($index == null)
           throw new Exception("ELPHO: No index for new Router.");

@@ -1,6 +1,6 @@
 <?php
-  requireOnce("php/event/EventHandler.php");
-  requireOnce("php/lang/Object.php");
+  require_once("php/event/EventHandler.php");
+  require_once("php/lang/Object.php");
 
   class DispatcherHelper extends Object{
     public function DispatcherHelper(){}

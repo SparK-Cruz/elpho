@@ -1,5 +1,5 @@
 <?php
-  requireOnce("mvc/Controller.php");
+  require_once("mvc/Controller.php");
 
   class ErrorController extends Controller{
     private static $default401 = "mvc/error/default401.html.php";

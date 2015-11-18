@@ -3,10 +3,10 @@
    * @package php.io
    * @author SparK
    */
-  requireOnce("php/lang/String.php");
-  requireOnce("php/lang/ArrayList.php");
-  requireOnce("php/io/IoException.php");
-  requireOnce("php/io/file/File.php");
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/io/IoException.php");
+  require_once("php/io/file/File.php");
 
   class Email{
     private $charset;

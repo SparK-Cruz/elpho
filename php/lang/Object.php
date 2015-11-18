@@ -1,8 +1,8 @@
 <?php
-  requireOnce("php/lang/Dynamic.php");
-  requireOnce("php/lang/String.php");
-  requireOnce("php/lang/ArrayList.php");
-  requireOnce("php/event/EventHandler.php");
+  require_once("php/lang/Dynamic.php");
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/event/EventHandler.php");
 
   class Object extends EventHandler implements ArrayAccess, Iterator{
     private $_prototype;
@@ -55,7 +55,7 @@
     //constructor
     public function Object($properties=array(),$prototype=null,$_=null){
       $prototypeList = $prototype;
-      if(!is_a($prototype,ArrayList)){
+      if(!is_a($prototype,"ArrayList")){
         $prototypeList = ArrayList::create(func_get_args());
         $prototypeList->shift();
         if($prototypeList->isEmpty()) $prototypeList->push(new Dynamic());

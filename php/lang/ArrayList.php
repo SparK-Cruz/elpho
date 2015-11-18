@@ -1,5 +1,5 @@
 <?php
-  requireOnce("php/lang/String.php");
+  require_once("php/lang/String.php");
 
   class ArrayList implements Serializable, ArrayAccess, IteratorAggregate{
     protected $elements;
@@ -43,7 +43,7 @@
     }
 
     public static function create($array){
-      if(is_a($array,ArrayList)) $array = $array->toPrimitive();
+      if(is_a($array,"ArrayList")) $array = $array->toPrimitive();
 
       return new ArrayList_from($array);
     }
@@ -127,7 +127,7 @@
     }
     public function filter($callback=null){
       $default = function($element){
-        if(is_a($element,String))
+        if(is_a($element,"String"))
           return !$element->isEmpty();
         return !!$element;
       };

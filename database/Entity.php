@@ -1,9 +1,9 @@
 <?php
-  requireOnce("php/lang/String.php");
-  requireOnce("php/lang/ArrayList.php");
-  requireOnce("php/lang/Dynamic.php");
-  requireOnce("php/event/EventHandler.php");
-  requireOnce("database/DatabaseException.php");
+  require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
+  require_once("php/lang/Dynamic.php");
+  require_once("php/event/EventHandler.php");
+  require_once("database/DatabaseException.php");
   requireDirOnce("database/event");
 
   abstract class Entity extends EventHandler{
@@ -280,7 +280,7 @@
       $this->records[] = $this->record;
       $this->hasRecords = true;
 
-      $eventClass = $isNew?Create:Update;
+      $eventClass = $isNew?"Create":"Update";
       $this->dispatchEvent(new $eventClass($result,$options));
 
       return $isNew;
