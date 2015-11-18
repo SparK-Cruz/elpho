@@ -99,34 +99,25 @@ Just pass the main class filename and it will call it when it finishes loading y
 2. `loadExtension(path)`
 This function loads plugins and modules for the framework by adding their path to the include_path, it also runs their `startup.php` if any.
 
-3. `call(function [, argument...])`
+3. `requireDirOnce(path)`
+Recursive require files from the directory tree.
+
+4. `call(function [, argument...])`
 An alias to `call_user_func`.
 
-4. `callArgs(function , argumentArray)`
+5. `callArgs(function , argumentArray)`
 An alias to `call_user_func_array`.
 
-5. `alias(newName , oldName)`
+6. `alias(newName , oldName)`
 Creates alias for classes. Does **not** unload the aliased class and does **not** override existing classes.
 
-6. `named(constructorMethod [, className])`
+7. `named(constructorMethod [, className])`
 Creates named constructors from methods.
 Any method starting with a single underscore (`_method`) can be used. After the class declaration add `named("method");` without underscore.
 Now you may use your named constructor. ex: Class `ArrayList` has method `_from` so it has both constructors `new ArrayList([el0] [, el1]...)` and `new ArrayList_from(array)`.
 
-7. `matchTypes(type [, type]...)`
+8. `matchTypes(type [, type]...)`
 Returns true if the list of arguments in the **current function** matches the types passed to it.
-
-8. `requireFile(path)`
-Requires file and defines a "define" with class name if class exists with same name as file without extension.
-
-9. `require_once(path)`
-Same as `requireFile` but won't attempt to load the same file twice in the same request.
-
-10. `requireDir(path)`
-Used to load all files in directory at once, also defines a "define" with class names if they match the filename.
-
-11. `requireDirOnce(path)`
-Same as `requireDir` but won't attempt to load the same directory twice in the same request.
 
 ## WORK IN PROGRESS
 This framework is a work in progress and always will be.

@@ -14,4 +14,3 @@
   Starter::start(__DIR__);
 
   requireDirOnce("php/lang");
-
