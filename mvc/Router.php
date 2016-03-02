@@ -87,13 +87,14 @@
       $baseUrl = $parts->join("/")->concat("/");
 
       $this->map($baseUrl, array($controller, "index"));
-      $this->map($baseUrl."new", array($controller, "new"));
-      $this->map($baseUrl."#:id", array($controller, "view"));
-      $this->map($baseUrl."#:id/edit", array($controller, "edit"));
+      $this->map($baseUrl, array($controller, "create"), "post");
+      $this->map($baseUrl."/new", array($controller, "new"));
 
-      $this->map($baseUrl."#:id", array($controller, "put_edit"), "put");
-      $this->map($baseUrl."create", array($controller, "create"), "post");
-      $this->map($baseUrl."#:id", array($controller, "delete"), "delete");
+      $this->map($baseUrl."/#:id", array($controller, "show"));
+      $this->map($baseUrl."/#:id", array($controller, "update"), "put");
+      $this->map($baseUrl."/#:id", array($controller, "delete"), "delete");
+      $this->map($baseUrl."/#:id/edit", array($controller, "edit"));
+
     }
 
     public function getRequest(){

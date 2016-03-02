@@ -6,9 +6,9 @@
       $this->sandboxedFileName = $sandboxedFileName;
     }
 
-    public function render(){
-      call_user_func(function($viewbag){
+    public function render($model=null){
+      call_user_func(function($viewbag,$model){
         include($this->sandboxedFileName);
-      }, $this);
+      }, $this, $model);
     }
   }
