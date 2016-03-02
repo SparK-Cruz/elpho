@@ -84,7 +84,7 @@
 
       $parts = $baseUrl->replace("\\", "/")->split("/");
       $parts = $parts->filter();
-      $baseUrl = $parts->join("/")->concat("/");
+      $baseUrl = $parts->join("/");
 
       $this->map($baseUrl, array($controller, "index"));
       $this->map($baseUrl, array($controller, "create"), "post");
