@@ -90,11 +90,10 @@
       $this->map($baseUrl, array($controller, "create"), "post");
       $this->map($baseUrl."/new", array($controller, "new"));
 
-      $this->map($baseUrl."/#:id", array($controller, "show"));
-      $this->map($baseUrl."/#:id", array($controller, "update"), "put");
-      $this->map($baseUrl."/#:id", array($controller, "delete"), "delete");
-      $this->map($baseUrl."/#:id/edit", array($controller, "edit"));
-
+      $this->map($baseUrl."/#id", array($controller, "show"));
+      $this->map($baseUrl."/#id", array($controller, "update"), "put");
+      $this->map($baseUrl."/#id", array($controller, "delete"), "delete");
+      $this->map($baseUrl."/#id/edit", array($controller, "edit"));
     }
 
     public function getRequest(){
