@@ -82,7 +82,14 @@
       return $this->table;
     }
     public function getRecord(){
-      return $this->record;
+      return (new Object($this->record))->duplicate()->toPrimitive();
+    }
+    public function getRecords(){
+      $new = array();
+      foreach($this->records as $rec){
+        $new[] = (new Object($rec))->duplicate()->toPrimitive();
+      }
+      return $new;
     }
     public function isAvailable(){
       return $this->inPosition;
@@ -414,7 +421,7 @@
       if($this->readOnly)
         return;
 
-      $this->statements->create = $this->connection->prepare("INSERT INTO ".$openSeparator.$this->table.$closeSeparator." (".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator.") VALUES(".implode(", ",array_map(function($field){ return ":".$field; },$fields)).")");
+      $this->statements->create = $this->connection->prepare("INSERT INTO ".$openSeparator.$this->table.$closeSeparator." (".$openSeparator.implode($closeSeparator.", ".$openSeparator,$fields).$closeSeparator.") VALUES( ".implode(", ",array_map(function($field){ return ":".$field; },$fields))." )");
       $this->statements->update = $this->connection->prepare("UPDATE ".$openSeparator.$this->table.$closeSeparator." SET ".implode(", ",array_map(function($field) use($openSeparator,$closeSeparator){ return $openSeparator.$field.$closeSeparator." = :".$field; },$fields))." WHERE ".$openSeparator.$this->keyField.$closeSeparator." = :".$this->keyField);
       $this->statements->delete = $this->connection->prepare("DELETE FROM ".$openSeparator.$this->table.$closeSeparator." WHERE ".$openSeparator.$this->keyField.$closeSeparator." = :".$this->keyField);
     }

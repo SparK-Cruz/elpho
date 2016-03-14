@@ -93,10 +93,8 @@
       list($x,$y) = $this->calcularPosicao($size[0],$size[1],$markSize[0],$markSize[1],$position);
 
       imagecopyresampled($image,$local,0,0,0,0,$size[0],$size[1],$size[0],$size[1]);
-      imagecopyresampled($nova,$local,0,0,0,0,$size[0],$size[1],$size[0],$size[1]);
-      imagecopyresampled($nova,$markResource,$x,$y,0,0,$markSize[0],$markSize[1],$markSize[0],$markSize[1]);
-
-      imagecopymerge($image,$nova,0,0,0,0,$size[0],$size[1],$transparencia);
+      imagecopyresampled($nova,$markResource,0,0,0,0,$size[0],$size[1],$size[0],$size[1]);
+      imagecopymerge($image,$nova,$x,$y,0,0,$size[0],$size[1],$transparencia);
 
       $retorno = $this->copy();
       $retorno->setResource($image);

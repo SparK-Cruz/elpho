@@ -152,7 +152,7 @@
       $this->elements[$index] = $value;
     }
     public function get($index){
-      return $this->relements[$index];
+      return $this->elements[$index];
     }
 
     private function getLastKey(){

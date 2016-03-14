@@ -140,6 +140,16 @@
       if($subject === null) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
       call_user_func_array(array($subject,$key),$params);
     }
+    public function duplicate(){
+      $new = new Object();
+      foreach($this->properties as $name => $value){
+        $new->{$name} = $value;
+      }
+      return $new;
+    }
+    public function toPrimitive(){
+      return $this->properties;
+    }
     public function __toString(){
       return '[object '.get_class($this).']';
     }

@@ -46,8 +46,7 @@
           $uri = new String("/".$uri);
 
         $router = self::getInstance();
-
-        if($router->findRoute($uri->split("/")->filter(), $method) == self::$default)
+        if($router->findRoute($uri->split("?")->get(0)->split("/")->filter(), $method) == self::$default)
           return self::$root."/error/404";
       }
 
@@ -64,6 +63,13 @@
     }
 
     public function map($url, $callback, $method="get"){
+      if(is_array($method)){
+        foreach($method as $allowed){
+          $this->map($url, $callback, $allowed);
+        }
+        return;
+      }
+
       if(is_array($url)){
         foreach ($url as $value) {
           $this->map($value, $callback, $method);
@@ -88,7 +94,7 @@
 
       $this->map($baseUrl, array($controller, "index"));
       $this->map($baseUrl, array($controller, "create"), "post");
-      $this->map($baseUrl."/new", array($controller, "new"));
+      $this->map($baseUrl."/new", array($controller, "newModel"));
 
       $this->map($baseUrl."/#id", array($controller, "show"));
       $this->map($baseUrl."/#id", array($controller, "update"), "put");
@@ -104,7 +110,7 @@
       if ($requestUri->toLowerCase()->startsWith(self::$root))
         $requestUri = $requestUri->substr(strlen(self::$root));
 
-      $request = $requestUri->split("/")->filter();
+      $request = $requestUri->split("?")->get(0)->split("/")->filter();
       return $request;
     }
     public function findRoute($request=null, $method=null){
