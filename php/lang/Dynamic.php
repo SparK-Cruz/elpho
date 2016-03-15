@@ -8,7 +8,7 @@
      * @return void
      */
     public function __call($key,$params=array()){
-      if(!isset($this->{$key})) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
+      if(!isset($this->{$key})) throw new Exception("ELPHO: Call to undefined method ".get_class($this)."::".$key."()");
       $subject = $this->{$key};
       $backtrace = debug_backtrace();
       $validKeys = array($key,"call_user_func_array","__call");

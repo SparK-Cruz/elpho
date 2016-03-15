@@ -5,7 +5,7 @@
     private static $started = false;
 
     public static function start($path){
-      if (self::$started) throw new Exception("Starter can only be run once!");
+      if (self::$started) throw new Exception("ELPHO: Starter can only be run once!");
       LoadManager::loadElphoPath($path);
       self::registerMain();
 

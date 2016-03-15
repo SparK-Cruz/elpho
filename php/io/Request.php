@@ -3,7 +3,7 @@
     private $link;
 
     public function Request($url=null,$options=array()){
-      if(!function_exists("curl_init")) throw new Exception("Client URL Module not found in current environment.");
+      if(!function_exists("curl_init")) throw new Exception("ELPHO: Client URL Module not found in current environment.");
       $this->link = $this->checkSuccess(curl_init($url));
       $this->setOption("RETURNTRANSFER",true);
       $this->setOptions($options);

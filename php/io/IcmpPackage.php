@@ -22,7 +22,7 @@
         $type = $type->substr(0,1);
       }
 
-      if(ord($type) > 16) throw new IoException("Invalid ICMP type. Check RFC 792 for more info.");
+      if(ord($type) > 16) throw new IoException("ELPHO: Invalid ICMP type. Check RFC 792 for more info.");
 
       $this->setType($type);
       $this->setData($data);
