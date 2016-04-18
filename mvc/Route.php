@@ -51,9 +51,16 @@
         $args->{$this->argsNames[$key]} = $request[$i[0]];
       }
 
+      //external args
       foreach($inputData as $key => $value){
         $args->{$key} = $value;
       }
+
+      //app lavel args, FOR SAFETY THESE take precedence
+      if(session_status() == PHP_SESSION_ACTIVE)
+        foreach($_SESSION as $key => $value){
+          $args->{$key} = $value;
+        }
 
       return $args;
     }
