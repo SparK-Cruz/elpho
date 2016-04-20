@@ -250,8 +250,11 @@
 
     //writting
     public function save(){
-      if($this->readOnly) return;
-      if(empty($this->table)) throw new DatabaseException("ELPHO: No table set.");
+      if($this->readOnly)
+        throw new DatabaseException("ELPHO: Entity is read only.");
+
+      if(empty($this->table))
+        throw new DatabaseException("ELPHO: No table set.");
 
       $options = new stdClass();
 
@@ -297,7 +300,7 @@
         throw new DatabaseException("ELPHO: No record positioned.");
 
       if($this->readOnly)
-        return;
+        throw new DatabaseException("ELPHO: Entity is read only.");
 
       $key = $this->keyField;
 

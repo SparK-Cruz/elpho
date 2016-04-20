@@ -99,8 +99,9 @@
      * @param int $limit (opcional) numero maximo de quebras permitidas
      * @return ArrayList
      */
-    public function split($delimiter,$limit=false){
-      if(!$delimiter) return array(new String($this->value));
+    public function split($delimiter="",$limit=false){
+      if(!$delimiter)
+        return ArrayList::create(str_split($this->value));
       $limit = $limit ? $limit : strlen($this->value) + 1;
       $primitive = explode($delimiter,$this->value,$limit);
       $list = array();
