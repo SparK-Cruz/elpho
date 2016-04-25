@@ -30,6 +30,11 @@
       call(array("ErrorController", "e401"), $args);
     }
 
+    protected static function notFound(){
+      $args = $_REQUEST;
+      call(array("ErrorController", "e404"), $args);
+    }
+
     public static function _beforeFilter($method, $args){
       return true;
     }
