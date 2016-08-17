@@ -7,7 +7,7 @@
 
   class Index{
     public static final function main($args=array()){
-      $router = Router::getInstance(dirname(__FILE__));
+      $router = Router::getInstance(__DIR__);
 
       //** Sample error view customization
       //ErrorController::$e500view = "e500.html";
