@@ -15,12 +15,6 @@
         if($index == null)
           throw new Exception("ELPHO: No index for new Router.");
 
-        $routes["get"] = array();
-
-        $routes["put"] = array();
-        $routes["post"] = array();
-        $routes["delete"] = array();
-
         self::$instance = new self($index, $default);
       }
       return self::$instance;
@@ -58,8 +52,14 @@
       $index = new String($index);
       $docRoot = new String($_SERVER["DOCUMENT_ROOT"]);
 
+      $this->routes["get"] = array();
+
+      $this->routes["put"] = array();
+      $this->routes["post"] = array();
+      $this->routes["delete"] = array();
+
       self::$default = new Route("", $default);
-      self::$root = $index->replace("\\", "/")->replace($docRoot->replace("\\","/")->toString(), "")->toLowerCase();
+      self::$root = $index->replace("\\", "/")->replace($docRoot->replace("\\","/")->toString(), "");
     }
 
     public function map($url, $callback, $method="get"){
@@ -107,7 +107,7 @@
       if (isset($_SERVER["REQUEST_URI"]))
         $requestUri = new String($_SERVER["REQUEST_URI"]);
 
-      if ($requestUri->toLowerCase()->startsWith(self::$root))
+      if ($requestUri->startsWith(self::$root))
         $requestUri = $requestUri->substr(strlen(self::$root));
 
       $request = $requestUri->split("?")->get(0)->split("/")->filter();
