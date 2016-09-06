@@ -13,6 +13,9 @@
     array_shift($args);
     return call_user_func_array($callback,$args);
   }
+  function apply($callback,$args=array()){
+    return call_user_func_array($callback,$args);
+  }
   function callArgs($callback,$args){
     return call_user_func_array($callback,$args);
   }

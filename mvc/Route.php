@@ -56,16 +56,70 @@
         $args->{$key} = $value;
       }
 
-      //app lavel args, FOR SAFETY THESE take precedence
+      //app-level args override user-level args for safety
+      $this->injectSessionArgs($args);
+
+      return $args;
+    }
+    private function injectSessionArgs(Object $args){
       if(session_status() == PHP_SESSION_ACTIVE)
         foreach($_SESSION as $key => $value){
           $args->{$key} = $value;
         }
-
-      return $args;
     }
     public function getPath(){
       return $this->path;
+    }
+    public function getStringPath($args=array()){
+      $result = new ArrayList();
+
+      $lastArg = -1;
+      for($i=0; $i<$this->path->length(); $i++){
+        $part = $this->path[$i];
+
+        if($part->startsWith("*") || $part->startsWith("#")){
+          $name = $this->argsNames[++$lastArg];
+          $result->push($args[$name->toString()]);
+          continue;
+        }
+
+        $result->push($part);
+      }
+
+      return $result->join("/");
+    }
+    public function matchByAction($callback, $args){
+      if(is_array($callback)){
+        if($callback[0] != $this->callback[0])
+          return false;
+        if($callback[1] != $this->callback[1])
+          return false;
+      }else{
+        if($callback != $callback)
+          return false;
+      }
+
+      if($this->argsNames->length() != count($args))
+        return false;
+
+      foreach($this->argsNames as $key => $name){
+        $name = $name->toString();
+        if(!isset($args[$name]))
+          return false;
+
+        switch($this->argsIndexes[$key][1]){
+          case self::ARG_TYPE_NUMBER:
+            if(!is_numeric($args[$name]))
+              return false;
+            break;
+          case self::ARG_TYPE_ANY:
+            if(!is_string($args[$name]))
+              return false;
+            break;
+        }
+      }
+
+      return true;
     }
     public function match(ArrayList $path){
       for($i=0; $i<max($this->path->length(),$path->length()); $i++){
@@ -80,7 +134,7 @@
         $request = $path[$i];
 
         if($this->argsIndexes->contains(array($i, self::ARG_TYPE_NUMBER))
-          and is_numeric($request->toString()))
+          && is_numeric($request->toString()))
           continue;
 
         if($this->argsIndexes->contains(array($i, self::ARG_TYPE_ANY)))
@@ -95,8 +149,15 @@
 
     public function go($request){
       try{
+        if(!is_callable($this->callback))
+          throw new UnregisteredRouteException();
+
         $args = $this->readArgs($request);
-        $signal = call(array($this->callback[0], "_beforeFilter"), $this->callback[1], $args);
+        $signal = true;
+
+        if(is_callable(array($this->callback[0], "_beforeFilter")))
+          $signal = call(array($this->callback[0], "_beforeFilter"), $this->callback[1], $args);
+
         if($signal)
           call($this->callback, $args);
 

@@ -231,6 +231,23 @@
       return new String($string);
     }
 
+    public function capitalize($charset='UTF-8'){
+      $strings = $this->split(' ');
+      $result = new ArrayList();
+      foreach($strings as $word){
+        $primitive = $word->toString();
+        $string = $primitive[0];
+        $string = htmlentities($string,ENT_COMPAT,$charset);
+        $string = strtoupper($string);
+        $string = String::fixUpperCaseEntities($string);
+        $string = html_entity_decode($string,ENT_COMPAT,$charset);
+        $primitive[0] = $string;
+
+        $result->push($primitive);
+      }
+      return $result->join(' ');
+    }
+
     /**
      * Metodo complementar que retorna uma instância de String com as entidades html de caracteres maiusculos dentro das normas da w3C
      * @param string $string string contendo entidades html com letras maiusculas ao invez de apenas a primeira
@@ -306,7 +323,7 @@
      */
     public static function format($formatString,$args=false){
       $args = func_get_args();
-      return new String(call_user_func_array("sprintf",$args));
+      return new String(apply("sprintf",$args));
     }
 
     /**

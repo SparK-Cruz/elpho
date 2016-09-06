@@ -16,7 +16,9 @@
 
       for($i = 0; $i < count($this->listeners[$eventName]); $i++){
         $subject = $this->listeners[$eventName][$i];
-        if($subject[0] !== $listener) continue;
+        if($subject[0] !== $listener)
+          continue;
+
         array_splice($this->listeners[$eventName],$i,1);
       }
     }
@@ -26,11 +28,14 @@
 
       foreach($this->listeners[$event::getName()] as $listener){
         $called = $listener[0];
-        if($listener[1] != "") $called = array($listener[0],$listener[1]);
+        if($listener[1] != "")
+          $called = $listener;
+
         call_user_func($called,$event);
       }
     }
     private function setup($eventName){
-      if(!isset($this->listeners[$eventName])) $this->listeners[$eventName] = array();
+      if(!isset($this->listeners[$eventName]))
+        $this->listeners[$eventName] = array();
     }
   }

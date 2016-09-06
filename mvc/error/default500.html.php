@@ -7,6 +7,6 @@
   <body>
     <h1>HTTP/1.1 500: Internal server error</h1>
     <h3><?=$viewbag->type?></h3>
-    <p><?=$viewbag->message?></p>
+    <p><pre><?=$viewbag->message?></pre></p>
   </body>
 </html>

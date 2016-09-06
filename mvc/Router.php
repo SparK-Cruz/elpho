@@ -19,6 +19,7 @@
       }
       return self::$instance;
     }
+
     public static function fileRoute($uri){
       $uri = new String($uri);
       if(!$uri->startsWith("/"))
@@ -27,6 +28,14 @@
       $router = self::getInstance();
 
       return self::$root.$uri;
+    }
+    public static function routeByAction($callback, $args, $method){
+      $router = self::getInstance();
+      $route = $router->findRouteByAction($callback, $args, $method);
+      if($route === self::$default)
+        return null;
+
+      return self::$root.'/'.$route->getStringPath($args);
     }
     public static function route($uri="", $method="get"){
       if (is_object($uri) and is_a($uri, Route)){
@@ -38,17 +47,12 @@
         $uri = new String($uri);
         if(!$uri->startsWith("/"))
           $uri = new String("/".$uri);
-
-        $router = self::getInstance();
-        if($router->findRoute($uri->split("?")->get(0)->split("/")->filter(), $method) == self::$default)
-          return self::$root."/error/404";
       }
 
       return self::$root.$uri;
     }
 
     private function __construct($index, $default){
-      $default = $default;
       $index = new String($index);
       $docRoot = new String($_SERVER["DOCUMENT_ROOT"]);
 
@@ -58,31 +62,37 @@
       $this->routes["post"] = array();
       $this->routes["delete"] = array();
 
-      self::$default = new Route("", $default);
+      self::$default = new Route("error/404", $default);
       self::$root = $index->replace("\\", "/")->replace($docRoot->replace("\\","/")->toString(), "");
     }
 
     public function map($url, $callback, $method="get"){
       if(is_array($method)){
+        $routes = array();
         foreach($method as $allowed){
-          $this->map($url, $callback, $allowed);
+          $routes[] = $this->map($url, $callback, $allowed);
         }
-        return;
+        return $routes;
       }
 
       if(is_array($url)){
+        $routes = array();
         foreach ($url as $value) {
-          $this->map($value, $callback, $method);
+          $routes[] = $this->map($value, $callback, $method);
         }
-        return;
+        return $routes;
       }
 
-      if(!is_object($url))
+      if(is_string($url))
         $url = new String($url);
 
       $parts = $url->replace("\\", "/")->split("/");
       $parts = $parts->filter();
-      $this->routes[$method][] =  new Route($parts, $callback);
+
+      $route = new Route($parts, $callback);
+      $this->routes[$method][] = $route;
+
+      return $route;
     }
     public function mapResource($baseUrl, $controller){
       if(!is_object($baseUrl))
@@ -129,6 +139,20 @@
 
       foreach($routes as $route){
         if(!$route->match($request))
+          continue;
+
+        return $route;
+      }
+
+      return self::$default;
+    }
+    public function findRouteByAction($callback, $args, $method="get"){
+      $routes = array();
+      if(isset($this->routes[$method]))
+        $routes = $this->routes[$method];
+
+      foreach($routes as $route){
+        if(!$route->matchByAction($callback, $args))
           continue;
 
         return $route;
