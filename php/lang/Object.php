@@ -107,7 +107,7 @@
     }
 
     public function __set($property,$value){
-      if($property == "prototype") throw new Exception("ELPHO: Cannot access read-only property ".get_class($this).'::$prototype');
+      if($property == "prototype") throw new Exception("Cannot access read-only property ".get_class($this).'::$prototype');
       $this->properties->{$property} = $value;
     }
     public function __get($property){
@@ -137,7 +137,7 @@
         }
       }
 
-      if($subject === null) throw new Exception("ELPHO: Call to undefined method ".get_class($this)."::".$key."()");
+      if($subject === null) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
       call_user_func_array(array($subject,$key),$params);
     }
     public function duplicate(){

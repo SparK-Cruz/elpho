@@ -133,7 +133,7 @@
 
         $assunto = self::fixAcentoAssunto($this->assunto);
         $sucesso = @mail($para->join(',')->toString(),$assunto,$mensagem,$this->headers);
-        if(!$sucesso) throw new IoException("ELPHO: Unexpected error from E-mail server.");
+        if(!$sucesso) throw new IoException("Unexpected error from E-mail server.");
         $para = new ArrayList();
         $pagina++;
       }

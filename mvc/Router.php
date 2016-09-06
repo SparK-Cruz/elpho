@@ -13,7 +13,7 @@
     public static function getInstance($index=null, $default=array("ErrorController", "e404")){
       if(self::$instance == null){
         if($index == null)
-          throw new Exception("ELPHO: No index for new Router.");
+          throw new Exception("No index for new Router.");
 
         self::$instance = new self($index, $default);
       }

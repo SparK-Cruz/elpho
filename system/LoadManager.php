@@ -41,7 +41,7 @@
 
       $handler = opendir($dir);
       if(!$handler)
-        throw new Exception("ELPHO: Could not find path \"$relative\"!");
+        throw new Exception("Could not find path \"$relative\"!");
 
       while(($file = readdir($handler)) != null){
         if($file[0] == ".")

@@ -251,10 +251,10 @@
     //writting
     public function save(){
       if($this->readOnly)
-        throw new DatabaseException("ELPHO: Entity is read only.");
+        throw new DatabaseException("Entity is read only.");
 
       if(empty($this->table))
-        throw new DatabaseException("ELPHO: No table set.");
+        throw new DatabaseException("No table set.");
 
       $options = new stdClass();
 
@@ -297,10 +297,10 @@
     }
     public function delete($remove=true){
       if(!$this->inPosition)
-        throw new DatabaseException("ELPHO: No record positioned.");
+        throw new DatabaseException("No record positioned.");
 
       if($this->readOnly)
-        throw new DatabaseException("ELPHO: Entity is read only.");
+        throw new DatabaseException("Entity is read only.");
 
       $key = $this->keyField;
 

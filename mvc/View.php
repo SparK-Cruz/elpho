@@ -38,7 +38,7 @@
         ob_start();
         try{
           if(!include($this->sandboxedFileName))
-            throw new Exception("ELPHO: Unimplemented view \"$this->sandboxedFileName\".");
+            throw new Exception("Unimplemented view \"$this->sandboxedFileName\".");
         }catch(Exception $ex){
           ob_end_clean();
           throw $ex;
