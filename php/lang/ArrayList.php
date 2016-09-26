@@ -76,6 +76,13 @@
       $this->elements = array_merge($this->elements,func_get_args());
       return $this->length();
     }
+    public function pushAll($elements){
+      if(is_a($elements, 'ArrayList'))
+        $elements = $elements->toPrimitive();
+
+      $this->elements = array_merge($this->elements, $elements);
+      return $this->length();
+    }
     public function reverse(){
       return self::create(array_reverse($this->elements));
     }
