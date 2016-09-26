@@ -101,9 +101,22 @@
     public function __invoke($properties=array()){
       return new Object($properties,$this);
     }
+
     //extend as prototype for javascript people
     public static function create(Object $object, $_=null){
       return new Object(array(),ArrayList::create(func_get_args()));
+    }
+
+    public static function merge(Object $object, Object $_=null){
+      $args = func_get_args();
+      $new = new Object();
+
+      foreach ($args as $obj) {
+        foreach ($obj as $key => $value) {
+          $new->{$key} = $value;
+        }
+      }
+      return $new;
     }
 
     public function __set($property,$value){
