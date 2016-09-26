@@ -30,13 +30,13 @@
       };
 
       //OPTION 1: Attaching the instance method as a listener to "EventHelper" event
-      $dispatcher->addEventListener(EventHelper, array($hardListener,'listeningMethod'));
+      $dispatcher->addEventListener("EventHelper", array($hardListener,'listeningMethod'));
 
       //OPTION 2: Attaching the function listener to the "EventHelper" event
-      $dispatcher->addEventListener(EventHelper, $dynamicListener);
+      $dispatcher->addEventListener("EventHelper", $dynamicListener);
 
       //OPTION 3: Attaching the dynamic instance method as a listener to "EventHelper" event
-      $dispatcher->addeventListener(EventHelper, array($otherListener, "ouvir"));
+      $dispatcher->addeventListener("EventHelper", array($otherListener, "ouvir"));
 
       //The run method inside our dispatcher calls "dispatch(new EventHelper())" on self
       $dispatcher->run();

@@ -150,8 +150,12 @@
         }
       }
 
-      if($subject === null) throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
-      call_user_func_array(array($subject,$key),$params);
+      if($subject === null)
+        throw new Exception("Call to undefined method ".get_class($this)."::".$key."()");
+
+      $closure = array($subject, $key);
+
+      call_user_func_array($closure,$params);
     }
     public function duplicate(){
       $new = new Object();
