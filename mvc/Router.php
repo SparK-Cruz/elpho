@@ -1,6 +1,8 @@
 <?php
   require_once("php/lang/String.php");
+  require_once("php/lang/ArrayList.php");
   require_once("mvc/Route.php");
+  require_once("mvc/RouteAnnotation.php");
   require_once("mvc/ErrorController.php");
 
   class Router{
@@ -64,6 +66,39 @@
 
       self::$default = new Route("error/404", $default);
       self::$root = $index->replace("\\", "/")->replace($docRoot->replace("\\","/")->toString(), "");
+    }
+
+    public function mapFor($class){
+      $type = new ReflectionClass($class);
+      $sets = array();
+
+      $methods = $type->getMethods(ReflectionMethod::IS_STATIC);
+      foreach($methods as $method){
+        $args = RouteAnnotation::read($method);
+
+        if($args->length() === 0)
+          continue;
+
+        $defaults = new Object();
+        $defaults->path = '';
+        $defaults->method = 'get';
+
+        foreach($args as $route){
+          $routeArgs = Object::merge($defaults, $route);
+
+          $sets[] = array(
+            $routeArgs->path,
+            array($method->class, $method->name),
+            strtolower($routeArgs->method));
+        }
+      }
+
+      $routes = array();
+      foreach($sets as $set){
+        $routes[] = $this->map($set[0], $set[1], $set[2]);
+      }
+
+      return $routes;
     }
 
     public function map($url, $callback, $method="get"){
