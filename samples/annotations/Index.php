@@ -7,6 +7,8 @@
     * @foo(one, two)
     * @foo(, two)
     * @foo(hey, strange-things/are-happening*!)
+    * @foo(baz=works, also)
+    * @foo(bar=also, works)
     */
     public static function victim(){
     }

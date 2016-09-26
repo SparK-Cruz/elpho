@@ -57,7 +57,7 @@
           //it has a key
           if($key != null){
             $found = false;
-            if(!($found = array_search($key, $keys)))
+            if(($found = array_search($key, $keys)) < 0)
               throw new Exception("Unknown annotation argument: ".$key);
 
             $modifier->{$key} = $value;
