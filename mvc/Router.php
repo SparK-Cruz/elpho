@@ -1,12 +1,14 @@
 <?php
   require_once("php/lang/String.php");
   require_once("php/lang/ArrayList.php");
+  require_once("php/di/DependencyInjector.php");
   require_once("mvc/Route.php");
   require_once("mvc/RouteAnnotation.php");
   require_once("mvc/ErrorController.php");
 
   class Router{
     private static $instance = null;
+    private static $di = null;
     private static $root;
     private static $default;
 
@@ -20,6 +22,10 @@
         self::$instance = new self($index, $default);
       }
       return self::$instance;
+    }
+
+    public static function setDependencyInjector(DependencyInjector $di){
+      self::$di = $di;
     }
 
     public static function fileRoute($uri){
@@ -125,6 +131,10 @@
       $parts = $parts->filter();
 
       $route = new Route($parts, $callback);
+
+      if(self::$di !== null)
+        $route->setDependencyInjector(self::$di);
+
       $this->routes[$method][] = $route;
 
       return $route;

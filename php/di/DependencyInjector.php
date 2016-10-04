@@ -20,7 +20,7 @@
       $this->providers->{$className} = $providerName;
     }
 
-    public function inject($target){
+    public function inject($target, $normalArgArray=null){
       $instance = null;
 
       if(is_string($target) && class_exists($target))
@@ -41,9 +41,20 @@
       if(!is_a($target, "ReflectionMethod"))
         throw new Exception("Could not inject dependencies for '".$target->getName()."'");
 
-      $parameters = $target->getParameters();
       $injected = array();
+      $skip = 0;
+      if(is_array($normalArgArray)){
+        $injected = array_merge($normalArgArray, $injected);
+        $skip = count($normalArgArray);
+      }
+
+      $parameters = $target->getParameters();
       foreach($parameters as $parameter) {
+        if($skip > 0){
+          $skip--;
+          continue;
+        }
+
         $injected[] = $this->buildDependency($parameter);
       }
 
@@ -54,7 +65,7 @@
     }
 
     private function buildDependency(ReflectionParameter $parameter){
-      //TODO upgrade to php7
+      //TODO upgrade to php7 to be able to infere by type
       /**
       $type = $parameter->getType();
       if($type == null){

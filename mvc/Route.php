@@ -8,6 +8,7 @@
     private $argsIndexes;
     private $argsNames;
     private $args;
+    private $di;
 
     public function __construct($path, $callback){
       if(is_array($path))
@@ -40,6 +41,11 @@
         }
       }
     }
+
+    public function setDependencyInjector(DependencyInjector $di){
+      $this->di = $di;
+    }
+
     private function readArgs($request){
       $args = new Object();
       parse_str(file_get_contents("php://input"),$inputData);
@@ -158,8 +164,12 @@
         if(is_callable(array($this->callback[0], "_beforeFilter")))
           $signal = call(array($this->callback[0], "_beforeFilter"), $this->callback[1], $args);
 
-        if($signal)
-          call($this->callback, $args);
+        if($signal){
+          if($this->di !== null)
+            $this->di->inject($this->callback, array($args));
+          else
+            call($this->callback, $args);
+        }
 
       }catch (Exception $ex){
         call(array("ErrorController", "e500"), array("exception"=>$ex));
